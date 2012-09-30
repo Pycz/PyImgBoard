@@ -25,3 +25,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#emacs
+*~
+#logs for apache
+error.log
+access.log
