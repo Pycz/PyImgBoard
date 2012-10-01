@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+}
+
+#center {
+    width: 909px;
+    height: 700px;
+    margin: 0 auto;
+}
+
+#header {
+    height: 200px;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+#site-name {
+    margin-top: 100px;
+}
+
+#header-text {
+    height: 130px;
+}
+
+#content {
+    background-color: #F6F6F6;
+    border: 1px solid #EAEAEA;
+    margin-bottom: 25px;
+    height: 300px;
+}
+
+#columns {
+    margin: 12px 12px 0 12px;
+    height: 250px;
+}
+
+#left-column {
+    width: 462px;
+    height: 250px;
+    float: left;
+}
+
+#right-column {
+    width: 421px;
+    height: 250px;
+    float: left;
+}
