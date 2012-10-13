@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib.template import Template, Context
 
 def index(request):
