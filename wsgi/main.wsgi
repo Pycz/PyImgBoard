@@ -1,11 +1,5 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*- 
-
-#put your app folder
-#module is not main
-import sys
-sys.path.insert(0, '/var/www/PyImgBoard/')
-
 import urls
 
 def application(environ, start_response):
