@@ -3,7 +3,8 @@ from lib.template import Template, Context
 
 def index(request):
     template = Template('index.html')
-    context = Context({'name': 'Bob'})
+    context = Context({'title': 'Главная страница', 
+                       'welcome_text': 'Добро пожаловать!'})
     result = template.render(context)
     return result
 
