@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
+from lib import utils
 import settings
+import sys
 
 class Template:
     def __init__(self, template_name):
@@ -10,9 +12,10 @@ class Template:
     def render(self, context):
         self.context = context
         self.template = None
+        root_dir = utils.get_root_dir()
         for dir in settings.TEMPLATE_DIRS:
             try:
-                self.template = open(dir + self.template_name)
+                self.template = open(root_dir + dir + self.template_name)
                 break
             except IOError:
                 pass

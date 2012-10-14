@@ -1,1 +1,1 @@
-TEMPLATE_DIRS = ('/var/www/PyImgBoard/www/',)
+TEMPLATE_DIRS = ('/www/',)
