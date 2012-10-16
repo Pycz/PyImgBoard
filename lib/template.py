@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+import inspect
 from lib import utils
 import settings
-import sys
+
 
 class Template:
     def __init__(self, template_name):
@@ -20,6 +22,7 @@ class Template:
                 self.template = open(root_dir + dir + self.template_name)
                 break
             except IOError:
+                #TODO tell to client about error
                 pass
 
         output = ''
@@ -28,8 +31,8 @@ class Template:
             return output
         try:
             output =  self._text()
-        except SyntaxError:
-            output = 'Syntax error'
+        except SyntaxError as ser:
+            output = str(ser)
         return output
 
     def _text(self):
@@ -69,13 +72,17 @@ class Template:
                 if char == '{':
                     state = 1
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected {', 
+                                      self._whoami(), state, 
+                                      daddy = self._whosdaddy())
             
             elif state == 1:
                 if char == '{':
                     state = 2                    
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected second {', 
+                                      self._whoami(), state, 
+                                      daddy = self._whosdaddy())
 
             elif state == 2:
                 if char.isalpha() or char == '_':
@@ -84,19 +91,20 @@ class Template:
                     var_name = self._variable_name()
                     var_value = self.context.get(var_name)
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('only blank can be \
+                    between {{ and var', self._whoami())
 
             elif state == 3:
                 if char == '}':
                     state = 4
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('only blank can be between var and }}', self._whoami())
 
             elif state == 4:
                 if char == '}':
                     break
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected second }', self._whoami())
 
             char = self.template.read(1)
 
@@ -111,13 +119,13 @@ class Template:
                 if char == '{':
                     state = 1
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected {', self._whoami())
 
             elif state == 1:
                 if char == '%':
                     state = 2
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected %', self._whoami())
 
             elif state == 2:
                 if char.isalpha():
@@ -127,7 +135,11 @@ class Template:
                        tag_result = self.tags[tag_name]()
                        break
                     else:                        
-                        raise SyntaxError()
+                        raise SyntaxError('tag ' + tag_name + ' does \
+                        not exist', self._whoami())
+                elif char <> ' ':
+                    raise SyntaxError('only blank can be between tag \
+                    and in', self._whoami())
             char = self.template.read(1)
 
         return tag_result
@@ -142,7 +154,7 @@ class Template:
             elif char == ' ':
                 break
             else:
-                raise SyntaxError()
+                raise SyntaxError('char ' + char + ' can not be in tag name', self._whoami())
             char = self.template.read(1)
         return tag_name
 
@@ -159,49 +171,52 @@ class Template:
                     for_var_name = self._variable_name()
                     state = 1
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('only blank can be between tag and in', self._whoami())
 
             elif state == 1:
                 if char == 'i':
                     state = 2
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('expected \'in\'', self._whoami())
             
             elif state == 2:
                 if char == 'n':
                     state = 3
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected \'in\'', self._whoami())
 
             elif state == 3:
                 if char.isalpha() or char == '_':
                     self._ungetc(-1)
                     in_var_name = self._variable_name()
                     state = 4
+                elif char <> ' ':
+                    raise SyntaxError('only blank can be between in and var', self._whoami())
 
             elif state == 4:
                 if char == '%':
                     state = 5
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('expected %', self._whoami())
                 
             elif state == 5:
                 if char == '}':
                     last_state = True
                     break
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected }', self._whoami())
+
             char = self.template.read(1)
 
         if not last_state:
             #TODO other error need
-            raise SyntaxError()
+            raise SyntaxError('not last state. It is end of file maybe', self._whoami())
         
         in_var_value = self.context.get(in_var_name)
         if type(in_var_value) != type([]):
             #TODO other error need
-            raise SyntaxError
-
+            raise SyntaxError('type of var after in does not support', self._whoami())
+        
         result = ''
         start_loop = self.template.tell()
         for for_var_value in in_var_value:
@@ -240,10 +255,12 @@ class Template:
                         break
                     else:
                         result += self._tag()
+                        state = 0
                 else:
                     result += buf + char
 
             char = self.template.read(1)
+        
 
         return result
             
@@ -258,13 +275,13 @@ class Template:
                 if char == '{':
                     state = 1
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected {', self._whoami())
             
             elif state == 1:
                 if char == '%':
                     state = 2
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected %', self._whoami())
 
             elif state == 2:
                 if char == 'e':
@@ -272,7 +289,7 @@ class Template:
                 elif char.isalpha():
                     break
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('only blank can be between {% and tag', self._whoami())
 
             elif state == 3:
                 if char == 'n':
@@ -298,13 +315,13 @@ class Template:
                 if char == '{':
                     state = 1
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected {', self._whoami())
 
             elif state == 1:
                 if char == '%':
                     state = 2
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected %', self._whoami())
 
             elif state == 2:
                 if char.isalpha():
@@ -313,19 +330,19 @@ class Template:
                     if endtag_name in self.endtags:
                         state = 3
                     else:
-                        raise SyntaxError()
+                        raise SyntaxError('endtag ' + endtag_name + ' does not exist', self._whoami())
 
             elif state == 3:
                 if char == '%':
                     state = 4
                 elif char <> ' ':
-                    raise SyntaxError()
+                    raise SyntaxError('expected %', self._whoami(), state)
 
             elif state == 4:
                 if char == '}':
                     break
                 else:
-                    raise SyntaxError()
+                    raise SyntaxError('expected }', self._whoami(), state)
             char = self.template.read(1)
 
     def _get_endtag_name(self):
@@ -356,6 +373,10 @@ class Template:
 
     def _ungetc(self, numb):
         self.template.seek(numb, os.SEEK_CUR)
+    def _whoami(self):
+        return inspect.stack()[1][3]
+    def _whosdaddy(self):
+        return inspect.stack()[2][3]
         
         
 class Context:
@@ -376,4 +397,18 @@ class Context:
             pass
 
 class SyntaxError(Exception):
-    pass
+    def __init__(self, info='unknown', func_name=None, 
+                 state=None, daddy=None):
+        self.info = info
+        self.state = None
+        self.func_name = func_name
+        self.daddy = daddy
+    def __str__(self):
+        text = 'SyntaxError: %s' % (self.info,)
+        if self.state:
+            text += ' state = ' + str(self.state) 
+        if self.func_name:
+            text += ' in ' + self.func_name
+        if self.daddy:
+            text += ' daddy: ' + self.daddy
+        return text
