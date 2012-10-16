@@ -4,9 +4,11 @@ from lib.template import Template, Context
 def index(request):
     template = Template('index.html')
     a = [1, 2, 3, 4, 5]
+    b = [4, 8, 15, 16, 23, 42]
     context = Context({'title': 'Главная страница', 
                        'welcome_text': 'Добро пожаловать!', 
-                       'array': a})
+                       'array1': a,
+                       'array2': b})
     result = template.render(context)
     return result
 

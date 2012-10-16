@@ -22,9 +22,15 @@
       <div id="content">
 	<div id="columns">
 	  <div id="left-column">
-	    {% for var1 in array %}
-	      left column{{var1}}<p>
-	    {% endfor %}
+	    <table>
+	      {% for var1 in array1 %}
+	        <tr>
+	          {% for var2 in array2 %}
+	            <td>{{var1}}{{var2}}</td>
+	          {% endfor %}
+		</tr>
+	      {% endfor %}
+	    </table>
 	  </div>
 	  <div id="right-column">
 	    right column
