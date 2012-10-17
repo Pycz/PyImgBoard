@@ -11,6 +11,8 @@ class Template:
         self.template_name = template_name
         self.tags = {'for': self._loop, 'if': self._condition}
         self.endtags = ['endfor', 'endif']
+        self.pairs = {'for': 'endfor', 'if': 'endif'}
+        self.tags_stack = []
         self.template = None
 
     def render(self, context):
@@ -60,6 +62,9 @@ class Template:
                     text += buf + char
 
             char = self.template.read(1)
+
+        if len(self.tags_stack) > 0:
+            raise SyntaxError('tags stack is not empty', self._whoami())
 
         return text
 
@@ -132,8 +137,10 @@ class Template:
                     self._ungetc(-1)
                     tag_name = self._get_tag_name()
                     if self.tags.has_key(tag_name):
-                       tag_result = self.tags[tag_name]()
-                       break
+                        self.tags_stack.append(tag_name)
+                        tag_result = self.tags[tag_name]()
+                        self.tags_stack.pop()
+                        break
                     else:                        
                         raise SyntaxError('tag ' + tag_name + ' does \
                         not exist', self._whoami())
@@ -228,8 +235,52 @@ class Template:
         return result
 
     def _condition(self):
-        pass
+        state = 0
+        predicat_name = None
+        last_state = False
+        char = self.template.read(1)
+        while (len(char) == 1):
+            if state == 0:
+                if char.isalpha() or char == '_':
+                    self._ungetc(-1)
+                    predicat_name = self._variable_name()
+                    state = 1
+                elif char <> ' ':
+                    raise SyntaxError('only blank can be between if and predicat', self._whoiam())
+
+            elif state == 1:
+                if char == '%':
+                    state = 2
+                elif char <> ' ':
+                    raise SyntaxError('expected % or blank', self._whoami())
+
+            elif state == 2:
+                if char == '}':
+                    last_state = True
+                    break
+                else:
+                    raise SyntaxError('expected }', self._whoami())
+
+            char = self.template.read(1)
+
+        if not last_state:
+            #TODO other error
+            raise SyntaxError('state is not last', self._whoami(), 
+                              daddy = self._whosdaddy())
+
+        predicat = self.context.get(predicat_name)
+        if not type(predicat) is bool:
+            #TODO other error
+            raise SyntaxError('only bool is support', self._whoami())
         
+        result = ''
+        if predicat:
+            result += self._body()
+        else:
+            self._goto_endtag()
+
+        return result
+
     def _body(self):
         result = ''
         state = 0
@@ -261,9 +312,37 @@ class Template:
 
             char = self.template.read(1)
         
-
+        #TODO last state
         return result
+
+    def _goto_endtag(self):
+        last_state = False
+        state = 0
+        char = self.template.read(1)
+        while (len(char) == 1):
+            if state == 0:
+                if char == '{':
+                    state = 1
             
+            elif state == 1:
+                if char == '{':
+                    self._ungetc(-2)
+                    self._variable()
+                    state = 0
+                elif char == '%':
+                    self._ungetc(-2)
+                    if self._is_endtag():
+                        self._endtag()
+                        last_state = True
+                        break
+                    else:
+                        self._tag()
+                        state = 0
+            char = self.template.read(1)
+
+        if not last_state:
+            raise SyntaxError('state is not last', self._whoami())
+
     def _is_endtag(self):
         ok = False
         state = 0
@@ -308,6 +387,8 @@ class Template:
         return ok
 
     def _endtag(self):
+        last_state = False
+        endtag_name = None
         state = 0
         char = self.template.read(1)
         while (len(char) == 1):
@@ -340,11 +421,23 @@ class Template:
 
             elif state == 4:
                 if char == '}':
+                    last_state = True
                     break
                 else:
                     raise SyntaxError('expected }', self._whoami(), state)
             char = self.template.read(1)
 
+        if not last_state:
+            #TODO other state
+            raise SyntaxError('state is not last', self._whoami())
+
+        last_tag = self.tags_stack[-1]
+        if self.pairs[last_tag] <> endtag_name:
+            raise SyntaxError('end tag is not match', self._whoami())
+
+    
+
+        
     def _get_endtag_name(self):
         endtag_name = ''
         char = self.template.read(1)
