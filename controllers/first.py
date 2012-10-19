@@ -8,12 +8,15 @@ def index(request):
     context = Context({'title': 'Главная страница', 
                        'welcome_text': 'Добро пожаловать!', 
                        'array1': a,
-                       'array2': b})
+                       'array2': b, 
+                       'pred': False})
     result = template.render(context)
     return result
 
 def faq(request):
-    return 'faq!'
+    template = Template('faq.html')
+    context = Context({})
+    return template.render(context)
 
 def downloads(request):
     return 'downloads'
