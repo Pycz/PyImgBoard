@@ -23,19 +23,19 @@
 	<div id="columns">
 	  <div id="left-column">
 	    <table>
-	      {% for var1 in array1 %}
-	        <tr>
-	          {% for var2 in array2 %}
-	            <td>{{var1}}{{var2}}</td>
-	          {% endfor %}
-		</tr>
-	      {% endfor %}
+	      {% block left_column %}
+	        {% for var1 in array1 %}
+	          <tr>
+	            {% for var2 in array2 %}
+	              <td>{{var1}}{{var2}}</td>
+	            {% endfor %}
+		  </tr>
+		{% endfor %}
+	      {% endblock %}
 	    </table>
 	  </div>
 	  <div id="right-column">
-	    {% if pred %}
-	      right column
-	    {% endif %}
+	    {% block right_column %}hi spider-man{% endblock %}
 	  </div>
 	</div>
       </div>

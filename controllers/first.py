@@ -14,7 +14,9 @@ def index(request):
     return result
 
 def faq(request):
-    return 'faq!'
+    template = Template('faq.html')
+    context = Context({})
+    return template.render(context)
 
 def downloads(request):
     return 'downloads'
