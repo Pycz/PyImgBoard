@@ -1,44 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <title>{{ title }}</title>
-  </head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<title>{{ title }}</title>
+	</head>
   
-  <body>
-    <div id="center">
+	<body>
+		<div id="center">
+			<div id="header">
+				<div id="site-name">
+					<h2>PyImgBoard</h2>
+				</div>
+			<div id="header-text">
+				{{ welcome_text }}
+				<!--TODO write text -->
+			</div>
+		</div>
 
-      <div id="header">
-	<div id="site-name">
-	  <h2>PyImgBoard</h2>
-	</div>
-	<div id="header-text">
-	  {{ welcome_text }}
-	  <!--TODO write text -->
-	</div>
-      </div>
+		<div id="content">
+			<div id="columns">
+				<div id="left-column">
+				
+				</div>
+				<div id="right-column">
 
-      <div id="content">
-	<div id="columns">
-	  <div id="left-column">
-	    <table>
-	      {% block left_column %}
-	        {% for var1 in array1 %}
-	          <tr>
-	            {% for var2 in array2 %}
-	              <td>{{var1}}{{var2}}</td>
-	            {% endfor %}
-		  </tr>
-		{% endfor %}
-	      {% endblock %}
-	    </table>
-	  </div>
-	  <div id="right-column">
-	    {% block right_column %}hi spider-man{% endblock %}
-	  </div>
-	</div>
-      </div>
-    </div>
-  </body>
+				</div>
+			</div>
+		</div>         
+	</body>
 </html>

@@ -5,12 +5,14 @@ import sys
 import inspect
 from lib import utils
 import settings
+import types
 
 
 class Template:
     def __init__(self, template_name):
         self.template_name = template_name
-        self.tags = {'for': self._loop, 'if': self._condition, 'block': self._block}
+        self.tags = {'for': self._loop, 'if': self._condition, 
+                     'block': self._block}
 
         self.endtags = []
         self.pairs = {}
@@ -480,11 +482,19 @@ class Template:
 
     def _variable_name(self):
         state = 0
+        isdot = False
         var_name = ''
         char = self.template.read(1)
         while (len(char) == 1):
             if char.isalnum() or char == '_':
                 var_name += char
+                isdot = False
+            elif char == '.':
+                if not isdot:
+                    var_name += char
+                    isdot = True
+                else:
+                    raise SyntaxError('two dots', self._whoami())
             else:
                 self._ungetc(-1)
                 break
@@ -648,7 +658,33 @@ class Context:
         self.context = context
 
     def get(self, key):
-        return self.context.get(key, '')
+        keys = key.split('.')
+        result = self.context.get(keys[0])
+        if not result:
+            return ''
+        if isinstance(result, (types.FunctionType,
+                             types.MethodType,
+                             types.BuiltinFunctionType)):
+            result = result()
+        
+        for i in xrange(1, len(keys)):
+            if result is dict:
+                result = result.get(keys[i])
+            elif getattr(result, keys[i], None):
+                attr = getattr(result, keys[i])
+                if not isinstance(attr, (types.FunctionType,
+                                         types.MethodType,
+                                         types.BuiltinFunctionType)):
+                    result = attr
+                else:
+                    result = attr()
+            elif result is list and keys[i] is int:
+                result = result[keys[i]]
+            else:
+                raise SyntaxError('error type in context', 
+                                  self._whoami())
+                
+        return result
 
     def set(self, key, value):
         self.context[key] = value
@@ -665,6 +701,9 @@ class Context:
 
     def get_dict(self):
         return self.context
+
+    def _whoami(self):
+        return inspect.stack()[1][3]
 
 class SyntaxError(Exception):
     def __init__(self, info='unknown', func_name=None, 
