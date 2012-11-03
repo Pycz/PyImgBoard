@@ -14,7 +14,7 @@ def index(request):
     return result
 
 def faq(request):
-    template = Template('faq.html')    
+    template = Template('faq.html')
     context = Context({'s': 'gogog ogogog'})
     return template.render(context)
 
