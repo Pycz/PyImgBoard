@@ -17,3 +17,7 @@ def downloads(request):
 
 def other(request):
     return request['REQUEST_URI']
+
+def board(request, name):
+    #TODO get 'name' board comments
+    return 'name = ' + name
