@@ -26,16 +26,7 @@ class Template:
 
     def render(self, context):
         self.context = context
-        self.template = None
-        root_dir = utils.get_root_dir()
-        for dir in settings.TEMPLATE_DIRS:
-            try:
-                self.template = open(root_dir +  dir + self.template_name)
-                break
-            except IOError:
-                #TODO tell to client about error
-                pass
-
+        self.template = utils.get_template_file(self.template_name)
         output = ''
         if not self.template:
             #TODO raise exception
