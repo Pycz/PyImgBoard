@@ -6,12 +6,13 @@ class Url:
         self.url_pattern = url_pattern
         self.function = function
         self.pattern = re.compile(url_pattern)
+        self.matches = None
 
     def is_correct(self, url_string):
         correct = False
-        matches = self.pattern.findall(url_string)
-        if len(matches) > 0:
-            correct = True;
+        self.matches = self.pattern.findall(url_string)
+        if len(matches) == 1:
+            correct = True;            
         return correct
 
     def call_function(self, environ):
