@@ -5,7 +5,7 @@ import urls
 def application(environ, start_response):
     correct_url = None
     for url in urls.url_patterns:
-    	if url.is_correct(environ['REQUEST_URI']):
+    	if url.is_correct(environ['PATH_INFO']):
             correct_url = url
             break
 
