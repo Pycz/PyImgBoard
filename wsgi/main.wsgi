@@ -1,6 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*- 
 import urls
+from lib.http import Http404
 
 def application(environ, start_response):
     correct_url = None
@@ -9,14 +10,11 @@ def application(environ, start_response):
             correct_url = url
             break
 
-    output = ''
-    #TODO 404 if false
     if correct_url:
-        output = correct_url.call_function(environ)
+        response = correct_url.call_function(environ)
+    else:
+        response = Http404()
 
-    status = '200 OK'
-    response_headers = [('Content-type', 'text/html'),
-                        ('Content-Length', str(len(output)))]
-    start_response(status, response_headers)
+    start_response(response.get_status(), response.get_headers())
 
-    return [output]
+    return [response.content]
