@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 from lib.template import Template, Context
+from lib.http import HttpResponse, Http404
 
 def index(request):
     template = Template('index.html')
-    a = [1, 2, 3, 4, 5]
-    b = [4, 8, 15, 16, 23, 42]
-    context = Context({'title': 'Главная страница', 
-                       'welcome_text': 'Добро пожаловать!', 
-                       'array1': a,
-                       'array2': b, 
-                       'pred': False})
+    context = Context({'welcome_text': 'Добро пожаловать'})
     result = template.render(context)
-    return result
+    return HttpResponse(result)
 
 def faq(request):
     template = Template('faq.html')
     context = Context({'s': 'gogog ogogog'})
-    return template.render(context)
+    result = template.render(context)
+    return HttpResponse(result)
 
 def downloads(request):
-    return 'downloads'
+    return HttpResponse('downloads')
 
 def other(request):
-    return request['REQUEST_URI']
+    return HttpResponse(request['REQUEST_URI'])
+
+def board(request, name):
+    #TODO get 'name' board comments
+    return HttpResponse('name = ' + name)

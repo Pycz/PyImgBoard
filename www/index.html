@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="css/style.css" rel="stylesheet" type="text/css">
-		<title>{{ title }}</title>
+		<title>Главная страница</title>
 	</head>
   
 	<body>
@@ -11,22 +11,43 @@
 			<div id="header">
 				<div id="site-name">
 					<h2>PyImgBoard</h2>
+				</div>		
+				<div id="header-text">
+					{{ welcome_text }}
+					<!--TODO write text -->
 				</div>
-			<div id="header-text">
-				{{ welcome_text }}
-				<!--TODO write text -->
+			</div>
+
+			<div class="box">
+				<div class="box-bar"><h2>Boards</h2></div>
+				<div class="box-content">
+					<div class="column">
+						<h3>Interests</h3>
+						<ul>
+							<li>Video Game</li>
+							<li>Comics and Cartoons</li>
+							<li>Technology</li>
+							<li>Television and Film</li>
+							<li>Auto</li>
+							<li>Sports</li>
+							<li>Animals and Nature</li>
+							<li>Science and Math</li>
+							<li>International</li>
+						</ul>
+					</div>
+					<div class="column">
+						<h3>Japanese Culture</h3>
+						<ul>
+							<li>Anime and Manga</li>
+							<li>Anime/Wallpapers</li>
+							<li>Mecha</li>
+							<li>Flash</li>
+							<li>Transportation</li>
+							<li>Pokemon</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<div id="content">
-			<div id="columns">
-				<div id="left-column">
-				
-				</div>
-				<div id="right-column">
-
-				</div>
-			</div>
-		</div>         
 	</body>
 </html>
