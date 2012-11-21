@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from lib.template import Template, Context
 from lib.http import HttpResponse, Http404
+import models 
+import sys
 
 def index(request):
     template = Template('index.html')
@@ -14,6 +16,18 @@ def faq(request):
     result = template.render(context)
     return HttpResponse(result)
 
+def b(request):
+    template = Template('b.html')
+    try:
+        test = models.Model()
+        tread = models.Tread(1, "2012-10-12")
+    
+        context = Context({'lol': test.get_all_records_from(tread)})
+        result = template.render(context)
+        return HttpResponse(result)
+    except:
+        return HttpResponse(str(sys.exc_info()[0])+str(sys.exc_info()[1])+str(sys.exc_info()[2]))
+
 def downloads(request):
     return HttpResponse('downloads')
 
@@ -23,3 +37,4 @@ def other(request):
 def board(request, name):
     #TODO get 'name' board comments
     return HttpResponse('name = ' + name)
+

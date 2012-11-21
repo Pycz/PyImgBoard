@@ -6,4 +6,6 @@ url_patterns = [Url(r'^/$', first.index),
                 Url(r'^/([a-z]{1,3})/$', first.board),
                 Url(r'^/faq$', first.faq),
                 Url(r'^/downloads$', first.downloads),
-                Url(r'^/.*$', first.other),]
+                Url(r'^/b$', first.b),
+                Url(r'^/.*$', first.other),
+                ]

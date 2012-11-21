@@ -1,0 +1,27 @@
+<form method="post" action="wsgi/main.wsgi">
+      <p>
+         Name: <input type="text" name="name">
+      </p>
+      <p>
+         Email: <input type="text" name="email">
+      </p>
+      <p>
+         Title: <input type="text" name="title">
+      </p>
+      <p>
+         Post: <input type="text" name="post">
+      </p>
+		<p>
+         <input type="submit" value="Submit">
+         </p>
+</form> 
+<br>        
+       <ul>
+		{% for ololo in lol %}
+     	<li>{{ ololo.name }}<br> 
+     	{{ ololo.email }}<br>
+     	{{ ololo.title }}<br>
+     	{{ ololo.post }}</li>
+     	<br><br><br>
+		{% endfor %}
+		</ul>
