@@ -2,7 +2,7 @@
 import sqlite3
 import time
 from lib.utils import get_root_dir
-
+import sys
 
 class Record:
     '''Implements all records on board'''
@@ -40,7 +40,7 @@ class Tread:
 class Model:
     ''' DB connector '''
     def __init__(self):
-        self.conection = sqlite3.connect(get_root_dir()+"ImageBoard.db")
+        self.conection = sqlite3.connect(get_root_dir()+"/ImageBoard.db")
         self.cur = self.conection.cursor()
      
     def insert_record_into(self, tread, record, board = "B"):
