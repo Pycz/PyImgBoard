@@ -48,17 +48,17 @@ class Model:
         its_treads = "treads" + board
         
         self.conection.execute("""
-        INSERT INTO :its_records (name, email, title, post, image, tread_id)
+        INSERT INTO %s (name, email, title, post, image, tread_id)
         VALUES (:name, :email, :title, :post, :image, :tread_id)
-        """, 
-        {"its_records": its_records, "name": record.name, "email": record.email, 
+        """ % (its_records,), 
+        {"name": record.name, "email": record.email, 
             "title": record.title, "post": record.post, 
                 "image": record.image, "tread_id":  tread.id}) 
          
         # update time of last adding
         self.conection.execute("""
-        UPDATE :its_treads SET last_time = :timestamp WHERE id = :id """,
-        {"its_treads": its_treads, "timestamp": sqlite3.TimestampFromTicks(time.time()), 
+        UPDATE %s SET last_time = :timestamp WHERE id = :id """ % (its_treads,),
+        {"timestamp": sqlite3.TimestampFromTicks(time.time()), 
          "id": tread.id})
         
         self.conection.commit()
@@ -76,15 +76,14 @@ class Model:
     def get_tread_by_id(self, T_id, board = "B"):
         its_treads = "treads" + board
         self.cur.execute("""
-        SELECT * FROM :its_treads WHERE id = :tread_id""",
-        {"its_treads": its_treads, "tread_id": T_id})
+        SELECT * FROM %s WHERE id = :tread_id""" % (its_treads,),
+        {"tread_id": T_id})
         return self.cur.fetchall()
     
     def get_all_treads(self, board = "B"):
         its_treads = "treads" + board
         self.cur.execute("""
-        SELECT * FROM :its_treads""",
-        {"its_treads": its_treads,})
+        SELECT * FROM %s """ % (its_treads,))
         return self.cur.fetchall()
     
     
