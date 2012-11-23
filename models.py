@@ -36,12 +36,37 @@ class Tread:
         self.id = T_id
         self.last_time = last_time
         
+        
+    # compare by timestamp
+    def __eq__(self, other):    
+        return self.last_time==other.last_time
+    
+    def __ne__(self, other):    
+        return self.last_time!=other.last_time 
 
+    def __gt__(self, other):    
+        return self.last_time>other.last_time 
+    
+    def __lt__(self, other):    
+        return self.last_time<other.last_time 
+    
+    def __ge__(self, other):    
+        return self.last_time>=other.last_time 
+    
+    def __le__(self, other):    
+        return self.last_time<=other.last_time 
+           
 class Model:
     ''' DB connector '''
     def __init__(self):
         self.conection = sqlite3.connect(get_root_dir()+"/ImageBoard.db")
         self.cur = self.conection.cursor()
+        
+    def _tuple_to_obj(self, tup, Obj):
+        return Obj(*tup)
+    
+    def _list_of_tuple_to_list_of_obj(self, list_of_t, Obj):
+        return [self._tuple_to_obj(tup, Obj) for tup in list_of_t]
      
     def insert_record_into(self, tread, record, board = "B"):
         its_records = "records" + board
