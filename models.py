@@ -68,8 +68,8 @@ class Model:
         #its_treads = "treads" + board
         self.cur.execute(
         """
-        SELECT * FROM (recordsB) WHERE tread_id = (1)
-        """, {"its_records": its_records, "tread_id": str(tread.id)}
+        SELECT * FROM (%s) WHERE tread_id = (:tread_id)
+        """ % its_records, {"tread_id": str(tread.id)}
         )
         return self.cur.fetchall()
     
