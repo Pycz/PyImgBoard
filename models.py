@@ -66,9 +66,11 @@ class Model:
     def get_all_records_from(self, tread, board = "B"):
         its_records = "records" + board
         #its_treads = "treads" + board
-        self.cur.execute("""
-        SELECT * FROM :its_records WHERE tread_id = :tread_id""",
-        {"its_records": its_records, "tread_id": tread.id})
+        self.cur.execute(
+        """
+        SELECT * FROM (recordsB) WHERE tread_id = (1)
+        """, {"its_records": its_records, "tread_id": str(tread.id)}
+        )
         return self.cur.fetchall()
     
     def get_tread_by_id(self, T_id, board = "B"):
