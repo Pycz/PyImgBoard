@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-from lib.http import Http404
+from lib.http import HttpRequest, Http404
 
 class Url:
     def __init__(self, url_pattern, function):
@@ -19,7 +19,7 @@ class Url:
         return correct
 
     def call_function(self, environ):
-        request = self._get_request(environ)
+        request = HttpRequest(environ)
         try:
             if self.matches[0] is tuple:
                 output = self.function(request, *self.matches[0])
@@ -31,11 +31,3 @@ class Url:
             output = h404
 
         return output
-
-    def _get_request(self, environ):
-        #TODO return HttpRequest
-        request = {}
-        for key in environ:
-            if key.isupper():
-                request[key] = environ[key]
-        return request
