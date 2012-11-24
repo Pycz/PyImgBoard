@@ -361,6 +361,7 @@ class Template:
                         state = 0
                 else:
                     result += buf + char
+                    state = 0
 
             char = self.template.read(1)
         
