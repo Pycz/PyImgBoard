@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
+from lib.utils import strip_tags
 import models 
 import sys
 
@@ -45,6 +46,8 @@ def head(request):
         st = 'GET = ' + str(request.GET) + '<br>'
     else:
         st = 'POST = ' + str(request.POST) + '<br>'
+        st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
+        st += 'email: ' + request.POST['email'] + '<br>'
 
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'

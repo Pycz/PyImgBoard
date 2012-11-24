@@ -14,3 +14,14 @@ def get_template_file(template_name):
         except IOError:
             pass
     return template
+
+def strip_tags(s):
+    new_s = ''
+    for w in s:
+        if w == '<':
+            new_s += '&lt'
+        elif w == '>':
+            new_s += '&gt'
+        else:
+            new_s += w
+    return new_s

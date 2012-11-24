@@ -1,3 +1,4 @@
+import urllib
 from lib import utils
 from lib.headers import HttpHeaders, HttpStatusCode
 
@@ -71,7 +72,7 @@ class HttpRequest:
             par_split = all_params[i].split('=')            
             try:
                 param_name = par_split[0]
-                param_value = par_split[1]
+                param_value = urllib.unquote(par_split[1])
             except IndexError:
                 break
             params[param_name] = param_value
