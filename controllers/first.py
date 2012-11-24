@@ -41,3 +41,10 @@ def board(request, name):
 
 def ip(request):
     return HttpResponse(Template('ip.html').render({}))
+
+def head(request):
+    st = ''
+    for name in request:
+        st += name + ': ' + str(request[name]) + '<br>'
+    return HttpResponse(st)
+    
