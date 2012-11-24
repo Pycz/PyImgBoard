@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Find yourself! </title>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+	<body>
+		<style>
+			#article p {
+				margin-bottom: 20px;
+			}
+			.success {
+				padding: 5px;
+				color: white;
+				background: #0C0;
+			}
+			.fail {
+				padding: 5px;
+				color: white;
+				background: #CC2900;
+			}
+		</style>
+		<div id="article">
+			<p>
+				Finding your location: <span id="status">checking...</span>
+			</p>
+		</div>
+		<script>			
+			function success(position) {
+				var status = document.getElementById('status');
+				status.innerHTML = 'found you!';				
+				status.className = 'success';
+	
+				var mapcanvas = document.createElement('div');
+				mapcanvas.id = 'mapcanvas';
+				mapcanvas.style.height = '400px';
+				mapcanvas.style.width = '560px';
+			
+				document.getElementById('article').appendChild(mapcanvas);
+			
+				var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				var myOptions = {
+					zoom: 15,
+					center: latlng,
+					mapTypeControl: false,
+					navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+	
+				var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+			}
+			
+			function error(msg) {				
+				var s = document.getElementById('status');
+				s.innerHTML = typeof msg == 'string' ? msg : "failed";
+				s.className = 'fail';
+			}
+			
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(success, error);
+			} else {
+				error('not supported');
+			}
+		</script>
+    </body>
+</html>	

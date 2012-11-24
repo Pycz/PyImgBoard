@@ -38,3 +38,5 @@ def board(request, name):
     #TODO get 'name' board comments
     return HttpResponse('name = ' + name)
 
+def ip(request):
+    return HttpResponse(Template('ip.html').render({}))
