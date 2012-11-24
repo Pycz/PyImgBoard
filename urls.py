@@ -8,6 +8,6 @@ url_patterns = [Url(r'^/$', first.index),
                 Url(r'^/downloads$', first.downloads),
                 Url(r'^/b$', first.b),
                 Url(r'^/ip$', first.ip),
-                Url(r'^/hed.*', first.head),
+                Url(r'^/head$', first.head),
                 Url(r'^/.*$', first.other),
                 ]

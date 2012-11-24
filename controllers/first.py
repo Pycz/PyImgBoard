@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from lib.template import Template, Context
-from lib.http import HttpResponse, Http404
+from lib.http import HttpResponse, HttpRequest, Http404
 import models 
 import sys
 
@@ -41,7 +41,11 @@ def ip(request):
     return HttpResponse(Template('ip.html').render({}))
 
 def head(request):
-    st = ''
+    if request.method == 'GET':
+        st = 'GET = ' + str(request.GET) + '<br>'
+    else:
+        st = 'POST = ' + str(request.POST) + '<br>'
+
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
