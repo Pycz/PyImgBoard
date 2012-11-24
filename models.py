@@ -55,6 +55,7 @@ class Tread:
     
     def __le__(self, other):    
         return self.last_time<=other.last_time 
+    
            
 class Model:
     ''' DB connector '''
@@ -96,20 +97,20 @@ class Model:
         SELECT * FROM (%s) WHERE tread_id = (:tread_id)
         """ % its_records, {"tread_id": str(tread.id)}
         )
-        return self.cur.fetchall()
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)
     
     def get_tread_by_id(self, T_id, board = "B"):
         its_treads = "treads" + board
         self.cur.execute("""
         SELECT * FROM %s WHERE id = :tread_id""" % (its_treads,),
         {"tread_id": T_id})
-        return self.cur.fetchall()
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
     def get_all_treads(self, board = "B"):
         its_treads = "treads" + board
         self.cur.execute("""
         SELECT * FROM %s """ % (its_treads,))
-        return self.cur.fetchall()
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
     
                  

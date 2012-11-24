@@ -22,7 +22,7 @@ def b(request):
     test = models.Model()
     tread = models.Tread(1, "2012-10-12")
     testlist = test.get_all_records_from(tread)
-    testlist = [models.Record(*[x for x in item]) for item in testlist]
+    #testlist = [models.Record(*[x for x in item]) for item in testlist]
     context = Context({'lol': testlist})
     result = template.render(context)
     return HttpResponse(result)
