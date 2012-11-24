@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
+from lib.utils import now_timestamp
 from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
 import models 
 import sys
 
+
 def index(request):
     template = Template('index.html')
-    context = Context({'welcome_text': 'Добро пожаловать'})
+    context = Context({'welcome_text': 'Добро пожаловать. Снова.'})
     result = template.render(context)
     return HttpResponse(result)
 
@@ -19,9 +21,8 @@ def faq(request):
 def b(request):
     template = Template('b.html')
     test = models.Model()
-    tread = models.Tread(1, models.now_timestamp())
+    tread = models.Tread(1, now_timestamp())
     testlist = test.get_all_records_from(tread)
-    #testlist = [models.Record(*[x for x in item]) for item in testlist]
     context = Context({'lol': testlist})
     result = template.render(context)
     return HttpResponse(result)
