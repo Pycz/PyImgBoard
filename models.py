@@ -123,15 +123,48 @@ class Model:
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
     def get_all_treads_by_date(self, board = "B"):
+        "Returns treads in inverse"
         its_treads = "treads" + board
         
         self.cur.execute("""
-        SELECT * FROM %s ORDER BY timestamp""" % (its_treads,)
+        SELECT * FROM %s ORDER BY timestamp DESC""" % (its_treads,)
         )
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
+    def get_y_treads_from_x_position(self, x, y, board = "B"):
+        '''Returns y treads in inverse order 
+        Numering from 1'''
+        its_treads = "treads" + board
+        
+        if x<=0: 
+            x=1
+        
+        self.cur.execute("""
+        SELECT * FROM %s ORDER BY timestamp DESC LIMIT %d OFFSET %d""" % (its_treads, y, x-1)
+        )
+        
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread) 
     
+    def get_last_x_treads_from_tread(self, tread, x, board = "B"):
+        its_records = "records" + board
+        
+        self.cur.execute(
+        'SELECT count(*) FROM (%s) WHERE tread_id = (:tread_id)' 
+         % its_records, {"tread_id": str(tread.id)})
+        quantity = int(self.cur.fetchone()[0])
+        if quantity < x:
+            skip = 0
+        else:
+            skip = quantity - x
+        
+        self.cur.execute(
+        """
+        SELECT * FROM (%s) WHERE tread_id = (:tread_id) LIMIT :x OFFSET :skip 
+        """ % its_records, {"tread_id": str(tread.id), "x": str(x), "skip": str(skip)}
+        )
+        
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)              
                  
     def __del__(self):
         try:
