@@ -661,7 +661,7 @@ class Context:
         for i in xrange(1, len(keys)):
             if result is dict:
                 result = result.get(keys[i])
-            elif getattr(result, keys[i], None):
+            elif not getattr(result, keys[i], None) is None:
                 attr = getattr(result, keys[i])
                 if not isinstance(attr, (types.FunctionType,
                                          types.MethodType,
@@ -672,7 +672,7 @@ class Context:
             elif result is list and keys[i] is int:
                 result = result[keys[i]]
             else:
-                raise SyntaxError('error type in context', 
+                raise SyntaxError('error type in context',
                                   self._whoami())
                 
         return result
@@ -695,6 +695,9 @@ class Context:
 
     def _whoami(self):
         return inspect.stack()[1][3]
+    def _whosdaddy(self):
+        return inspect.stack()[2][3]
+
 
 class SyntaxError(Exception):
     def __init__(self, info='unknown', func_name=None, 
