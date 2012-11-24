@@ -27,9 +27,9 @@ class HttpResponse:
 
 class HttpRequest:
     def __init__(self, environ={}):
-        self._headers = _get_request_headers(environ)
-        self.GET = _get_get_parameters(environ)
-        self.POST = _get_post_parameters(environ)
+        self._headers = self._get_request_headers(environ)
+        self.GET = self._get_get_parameters(environ)
+        self.POST = self._get_post_parameters(environ)
         self.method = self._headers['REQUEST_METHOD']
         self.path = self._headers['PATH_INFO']
         
@@ -47,8 +47,7 @@ class HttpRequest:
             return params
         params = self._get_params(spl[1])
         return params
-            
-
+    
     def _get_post_parameters(self, environ):
         params = {}
         try:
@@ -56,10 +55,10 @@ class HttpRequest:
         except ValueError:
             length = 0
 
-        if length != 0:
+        if length == 0:
             return params
 
-        body = request['wsgi.input'].read(length)
+        body = environ['wsgi.input'].read(length)
         params = self._get_params(body)
         return params
 
@@ -73,14 +72,17 @@ class HttpRequest:
             try:
                 param_name = par_split[0]
                 param_value = par_split[1]
-            except KeyError:
+            except IndexError:
                 break
             params[param_name] = param_value
             i += 1
         return params
 
-    def __getitem__(header):
+    def __getitem__(self, header):
         return self._headers[header]
+
+    def __iter__(self):
+        return iter(self._headers)
         
 
 class Http404(Exception, HttpResponse):
