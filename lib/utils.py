@@ -40,3 +40,6 @@ def get_simple_record(name = "Anonymous",
                       image = image,
                       tread_id = tread_id)
     
+def get_simple_category(name = "Misc"):
+    return models.Category(id = 1, name = name)
+    

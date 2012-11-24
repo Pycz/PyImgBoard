@@ -5,7 +5,15 @@ from lib.utils import get_root_dir
 import lib.utils
 import sys
 
-
+class Category:
+    '''Implement all categorys'''
+    def __init__(self,
+                 T_id,
+                 name):
+        self.id = T_id
+        self.name = name
+        
+        
 class Board:
     '''Implement all boards'''
     def __init__(self,
@@ -13,13 +21,15 @@ class Board:
                  name,
                  adr,
                  treads_name,
-                 records_name):
+                 records_name,
+                 category_id):
         self.id = T_id
         self.name = name
         self.adr = adr
         self.treads_name = treads_name
         self.records_name = records_name
-
+        self.category_id = category_id
+        
 class Record:
     '''Implements all records on board'''
 
@@ -204,6 +214,39 @@ class Model:
         )""" % (its_records,))
         
         self.conection.commit() 
+        
+    def get_all_boards_from_category(self, category = lib.utils.get_simple_category()):
+        self.cur.execute(
+        """
+        SELECT * FROM boards WHERE category_id = (:category_id) ORDER BY name 
+        """ , {"category_id": str(category.id)}
+        )
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Board)
+    
+    def get_all_categorys(self):
+        self.cur.execute(
+        """
+        SELECT * FROM categorys ORDER BY name 
+        """
+        )
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Category) 
+           
+    def add_new_category(self, category = lib.utils.get_simple_category()):       
+        self.cur.execute(
+        """
+        SELECT count(*) FROM categorys WHERE name = :name 
+        """, {"name": category.name}
+        )
+        if self.cur.fetchone()[0]==0:
+            self.conection.execute("""
+            INSERT INTO categorys (name)
+            VALUES (:name)
+            """ , 
+            {"name": category.name}) 
+            
+            self.conection.commit()
+        
+            
                   
     def __del__(self):
         try:

@@ -3,6 +3,7 @@ from lib.utils import now_timestamp
 from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
 import models 
+import lib.utils
 import sys
 
 
@@ -50,4 +51,14 @@ def head(request):
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
-    
+
+def adminum(request):
+    model = models.Model()
+    if request.method == 'GET':
+        categ = model.get_all_categorys()
+        boards = {}
+        for cat in categ:
+            boards[cat.name] = model.get_all_boards_from_category(cat)
+        return HttpResponse(Template('adminum.html').render({
+                                                             "categorys": categ, 
+                                                             "boards_dict": boards})   
