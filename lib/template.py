@@ -178,7 +178,6 @@ class Template:
         last_state = False
         char = self.template.read(1)
         while (len(char) == 1):
-            print >> sys.stderr, 'char = ' + char
             if state == 0:
                 if char.isalpha() or char == '_':
                     self._ungetc(-1)
@@ -244,25 +243,12 @@ class Template:
                 else:
                     self._body(False)
 
-<<<<<<< HEAD
             elif type(in_var_value) == type({}):
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value.keys():
                     self.template.seek(start_loop)
                     self.context.set(for_var_name, for_var_value)
                     result += self._body()
-=======
-            start_loop = self.template.tell()
-            for for_var_value in in_var_value:
-                self.template.seek(start_loop)
-                print >> sys.stderr, 'context = ' + str(self.context)
-                self.context.set(for_var_name, for_var_value)
-                result += self._body()
-            if len(in_var_value) <> 0:
-                self.context.del_var(for_var_name)
-            else:
-                self._body(False)
->>>>>>> test
 
                 if len(in_var_value) <> 0:
                     self.context.del_var(for_var_name)
