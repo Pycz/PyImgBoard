@@ -30,9 +30,13 @@
 		</form>
 		
 		<div class="board">
-			{% for tread in all_treads %}
+			{% for tread in treads %}
 				<div class="tread">
-					{{tread.id}}
+				{% for post in tread.value %}
+					<div class="post">
+						{{post.name}}
+					</div>
+				{% endfor %}
 				</div>
 				<hr>
 			{% endfor %}

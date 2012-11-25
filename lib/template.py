@@ -229,8 +229,8 @@ class Template:
         if not do:
             self._body(False)
         else:
-            print >> sys.stderr, 'in_var_name = ' + in_var_name
             in_var_value = self.context.get(in_var_name)
+            print >> sys.stderr, 'type = ' + str(in_var_value)
             if type(in_var_value) is list:
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value:
@@ -256,7 +256,6 @@ class Template:
                 else:
                     self._body(False)
             else:
-                print >> sys.stderr, in_var_name + 'aaa = ' + str(in_var_value)
                 raise SyntaxError('type of var after in does not support - ', self._whoami())
 
         return result
@@ -668,7 +667,7 @@ class Context:
         keys = key.split('.')
         result = self.context.get(keys[0])
         print >> sys.stderr, 'result = ' + str(result)
-        if not result:
+        if result is None:
             return ''
         if isinstance(result, (types.FunctionType,
                              types.MethodType,
