@@ -5,8 +5,7 @@
 	</head>
 	<body>
 		<h1>Admin</h1>
-		<br/>
-		<br/>
+                <div style="float: left; padding-right: 30px">
 		<h4>Add new board:</h4>
 		<form method="post" action="/adminum">
 			<p>
@@ -15,6 +14,8 @@
 			<p>
 				Board address: <input type="text" name="badr">
 			</p>
+                </div>
+                        <div style="float: left; padding-right: 30px">
 			<p>Category:<br>
 				{% for categ in categorys %}
 					<p> <input type="radio" name="cat" value="{{categ.id}}" />{{categ.name}}
@@ -22,6 +23,7 @@
 			<p>
 				<input type="submit" value="Добавить">
 			</p>
+                        </div>
 		</form>
 		<br>
 		<h4>Add new category:</h4>

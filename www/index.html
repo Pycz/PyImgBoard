@@ -26,38 +26,19 @@
 			<div class="box">
 				<div class="box-bar"><h2>Boards</h2></div>
 				<div class="box-content">
+                                    {% for categ in categ_list %}
+                                    {% for post in categ %}
 					<div class="column">
-						<h3>Interests</h3>
+						<h3>{{post.key}}</h3>
 						<ul>
-							<li>Video Game</li>
-							<li>Comics and Cartoons</li>
-							<li>Technology</li>
-							<li>Television and Film</li>
-							<li>Auto</li>
-							<li>Sports</li>
-							<li>Animals and Nature</li>
-							<li>Science and Math</li>
-							<li>International</li>
+                                                    {% for bo in post.value %}
+							<li>{{bo.name}}</li>
+                                                    {% endfor %}
 						</ul>
 					</div>
-					<div class="column">
-						<h3>Japanese Culture</h3>
-						<ul>
-							<li>Anime and Manga</li>
-							<li>Anime/Wallpapers</li>
-							<li>Mecha</li>
-							<li>Flash</li>
-							<li>Transportation</li>
-							<li>Pokemon</li>
-						</ul>
-					</div>
-                                        <div class="column">
-						<h3>Misc</h3>
-						<ul>
-							<li>Random</li>
-                                                        <li>Request</li>
-						</ul>
-					</div>
+                                    {% endfor %}
+                                    {% endfor %}
+					
 				</div>
 			</div>
 		</div>
