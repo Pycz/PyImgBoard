@@ -183,11 +183,8 @@ class Template:
                     for_var_name = self._variable_name()
                     state = 1
                 elif char <> ' ':
-<<<<<<< HEAD
-                    raise SyntaxError('only blank can be between tag and in strange', self._whoami())
-=======
                     raise SyntaxError('only blank can be between tag and in char = ' + char + ' .', self._whoami(), daddy=self._whosdaddy())
->>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
+
 
             elif state == 1:
                 if char == 'i':

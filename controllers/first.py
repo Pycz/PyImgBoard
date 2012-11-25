@@ -5,11 +5,9 @@ from lib.http import HttpResponse, HttpRequest, Http404
 from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
-<<<<<<< HEAD
 
-=======
 import sys
->>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
+
 
 def index(request):
     template = Template('index.html')
@@ -70,33 +68,7 @@ def head(request):
 def adminum(request):
     model = models.Model()
     if request.method == 'POST':
-<<<<<<< HEAD
-        if request.has_key("сname"):
-            model.add_new_category(models.get_simple_category(
-                                            lib.utils.get_normal_string(request["cname"])))
-        else:
-            model.add_new_board_to_category(
-                                            models.get_simple_board(
-                                                            lib.utils.get_normal_string(request["bname"]),
-                                                            lib.utils.get_normal_string(request["badr"]), 
-                                                            request["cat"])
-                                            , model.get_category_by_id(request["cat"]))
-    categ = model.get_all_categorys()
-    boards = []
-    for cat in categ:
-        boards.append(model.get_all_boards_from_category(cat))
-    return HttpResponse(Template('adminum.html').render(Context({
-                                                         "categorys": categ, 
-                                                         "boards_list": boards})))
-                        
-env = {}
-env['REQUEST_URI']="lol"
-env['REQUEST_METHOD']="GET"
-env['PATH_INFO']="ER"
-request = HttpRequest(env)
-x = adminum(request)
-print x
-=======
+
         try: 
             if request.POST.has_key('cname'):
                 model.add_new_category(models.get_simple_category(
@@ -121,5 +93,4 @@ print x
                                                          "categorys": categ, 
                                                          "categ_list": newcateg})))
 
-          
->>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
+

@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
-=======
+
 import urllib
->>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
 from lib import utils
 from lib.headers import HttpHeaders, HttpStatusCode
 
@@ -90,13 +88,6 @@ class HttpRequest:
     def __iter__(self):
         return iter(self._headers)
     
-    def has_key(self, s):
-        try:
-            x = self[s]
-        except:
-            return False
-        else:
-            return True
         
     def has_key(self, key):
         return self._headers.has_key(key)
