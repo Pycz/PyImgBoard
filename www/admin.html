@@ -39,10 +39,8 @@
 		{% for categ in categorys %}
 			<p> <h5>{{categ.name}}</h3>
 			<br>
-			{% for lol in boards.dict %}
-				{% if lol.in %}
-					<p>{{ lol.name }} Addr: {{lol.adr}}</p>
-				{% endif %}
+			{% for lol in boards_dict %}
+			    <br>{{lol.key}} = {{lol.value}}
 			{% endfor %}
 		{% endfor %}
 	</body>

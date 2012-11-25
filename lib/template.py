@@ -142,7 +142,6 @@ class Template:
                     self._ungetc(-1)
                     tag_name = self._get_tag_name()
                     if self.tags.has_key(tag_name):
-                        print >> sys.stderr, 'tag = ' + tag_name
                         self.tags_stack.append(tag_name)
                         tag_result = self.tags[tag_name](do)
                         self.tags_stack.pop()
@@ -231,7 +230,8 @@ class Template:
             self._body(False)
         else:
             in_var_value = self.context.get(in_var_name)
-            if type(in_var_value) == type([]):
+            print >> sys.stderr, 'in var = ' + str(in_var_value)
+            if type(in_var_value) is list:
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value:
                     self.template.seek(start_loop)
@@ -243,11 +243,12 @@ class Template:
                 else:
                     self._body(False)
 
-            elif type(in_var_value) == type({}):
+            elif type(in_var_value) is dict:
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value.keys():
                     self.template.seek(start_loop)
-                    self.context.set(for_var_name, for_var_value)
+                    d = {'key': for_var_value, 'value': in_var_value[for_var_value]}
+                    self.context.set(for_var_name, d)
                     result += self._body()
 
                 if len(in_var_value) <> 0:
@@ -255,7 +256,8 @@ class Template:
                 else:
                     self._body(False)
             else:
-                raise SyntaxError('type of var after in does not support', self._whoami())
+                raise SyntaxError('type of var after in does not support - ' + str(in_var_value), self._whoami())
+
         return result
 
     def _condition(self, do=True):
@@ -664,6 +666,7 @@ class Context:
     def get(self, key):
         keys = key.split('.')
         result = self.context.get(keys[0])
+        print >> sys.stderr, 'result = ' + str(result)
         if not result:
             return ''
         if isinstance(result, (types.FunctionType,
@@ -672,8 +675,9 @@ class Context:
             result = result()
         
         for i in xrange(1, len(keys)):
-            if result is dict:
+            if type(result) is dict:
                 result = result.get(keys[i])
+                print >> sys.stderr, 'r = ' + str(result)
             elif not getattr(result, keys[i], None) is None:
                 attr = getattr(result, keys[i])
                 if not isinstance(attr, (types.FunctionType,
@@ -682,7 +686,7 @@ class Context:
                     result = attr
                 else:
                     result = attr()
-            elif result is list and keys[i] is int:
+            elif type(result) is list and type(keys[i]) is int:
                 result = result[keys[i]]
             else:
                 raise SyntaxError('error type in context',
