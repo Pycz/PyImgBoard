@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib.url import Url
 from controllers import first
 

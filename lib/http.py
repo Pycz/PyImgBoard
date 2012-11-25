@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib import utils
 from lib.headers import HttpHeaders, HttpStatusCode
 
@@ -83,6 +84,14 @@ class HttpRequest:
 
     def __iter__(self):
         return iter(self._headers)
+    
+    def has_key(self, s):
+        try:
+            x = self[s]
+        except:
+            return False
+        else:
+            return True
         
 
 class Http404(Exception, HttpResponse):
@@ -94,5 +103,7 @@ class Http404(Exception, HttpResponse):
         else:
             text = '<h1>404 Page Not Found</h1>'
         HttpResponse.__init__(self, content=text, status=404)
+
+
 
 

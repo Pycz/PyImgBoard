@@ -66,11 +66,17 @@ def adminum(request):
                                                             request["cat"])
                                             , model.get_category_by_id(request["cat"]))
     categ = model.get_all_categorys()
-    boards = {}
+    boards = []
     for cat in categ:
-        boards[cat] = model.get_all_boards_from_category(cat)
-    return HttpResponse(Template('adminum.html').render({
+        boards.append(model.get_all_boards_from_category(cat))
+    return HttpResponse(Template('adminum.html').render(Context({
                                                          "categorys": categ, 
-                                                         "boards_dict": boards}))
-
-          
+                                                         "boards_list": boards})))
+                        
+env = {}
+env['REQUEST_URI']="lol"
+env['REQUEST_METHOD']="GET"
+env['PATH_INFO']="ER"
+request = HttpRequest(env)
+x = adminum(request)
+print x

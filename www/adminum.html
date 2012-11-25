@@ -47,10 +47,10 @@
       {% for сatal in categorys %}
       <p><h6>{{ сatal.name }}</h6></p>
         <br>
-            {% for lol in boards_dict.catal %}
-            {% if lol.in %}
-            <p>{{ lol.name }} Адр: {{ lol.adr }}</p>
-            {% ensif %}
+            {% for lol in boards_list %}
+            {% for lo in lol %}
+            <p>{{ lo.name }} Адр: {{ lo.adr }}</p>
+            {% endfor %}
             {% endfor %}
 	{% endfor %}
         

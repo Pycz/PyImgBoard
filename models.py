@@ -267,7 +267,7 @@ class Model:
         SELECT * FROM categorys WHERE id = :id 
         """, {"id": T_id}
         )
-        return self.cur.fetchall()
+        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Category)
                   
     def __del__(self):
         try:
