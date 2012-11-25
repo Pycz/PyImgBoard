@@ -85,6 +85,9 @@ class HttpRequest:
     def __iter__(self):
         return iter(self._headers)
         
+    def has_key(self, key):
+        return self._headers.has_key(key)
+        
 
 class Http404(Exception, HttpResponse):
     def __init__(self):
