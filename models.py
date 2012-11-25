@@ -143,12 +143,6 @@ class Model:
         '''NEED FULL LEGIT RECORD!!! USE ALL PARAMETRS IN GET_SIMPLE_RECORD!!!'''
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
-        
-        self.conection.execute("""
-        INSERT INTO %s (id, last_time)
-        VALUES (:id, :last_time)
-        """ % (its_treads,), 
-        {"id": record.id, "last_time": now_timestamp()})
          
         self.conection.execute("""
         INSERT INTO %s (name, email, title, post, image, tread_id)
@@ -156,8 +150,21 @@ class Model:
         """ % (its_records,), 
         {"name": record.name, "email": record.email, 
             "title": record.title, "post": record.post, 
-                "image": record.image, "tread_id":  record.id})         
+                "image": record.image, "tread_id":  record.id})
+         
+        self.conection.commit()    
         
+        self.cur.execute('''
+        SELECT * FROM %s ORDER BY id DESC LIMIT 1
+        ''' % (its_records))  
+        record = self._tuple_to_obj(self.cur.fetchone(), Record)
+                
+        self.conection.execute("""
+        INSERT INTO %s (id, last_time)
+        VALUES (:id, :last_time)
+        """ % (its_treads,), 
+        {"id": record.id, "last_time": now_timestamp()})
+                
         self.conection.commit()
            
     def get_all_records_from(self, tread, board = get_simple_board()):

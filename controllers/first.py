@@ -6,15 +6,25 @@ from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
 
-import sys
+def test(request):
+    template = Template('addtread.html')
+    context = Context({})
+    result = template.render(context)
+    return HttpResponse(result)
 
 
 def handle_new_tread(request):
+    #lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])
     model = models.Model()
     if request.POST["pname"]=='':
         request.POST["pname"]="Anonymous" 
-    NewRecord = models.get_simple_record(name = request.POST["pname"], mail = request.POST["pmail"],
-                                          title = request.POST["ptitle"],ppost = request.POST["ppost"])
+    NewRecord = models.get_simple_record(name = request.POST["pname"], email = request.POST["pmail"],
+                                          title = request.POST["ptitle"],post = request.POST["ppost"])
+    MyBoard = models.get_simple_board(adr = "b")
+    model.add_new_tread_to_board_by_record(NewRecord, MyBoard)
+    newstr = str("b")+ ", "+str(request.POST["pname"])
+    con = {"lol": newstr, "boardname": "b"}
+    return HttpResponse(Template('treadcreated.html').render(Context(con)))
 
 def index(request):
     model = models.Model()
