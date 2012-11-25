@@ -5,8 +5,7 @@ from lib.http import HttpResponse, HttpRequest, Http404
 from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
-
-
+import sys
 
 def index(request):
     template = Template('index.html')
@@ -37,8 +36,18 @@ def other(request):
     return HttpResponse(request['REQUEST_URI'])
 
 def board(request, name):
-    #TODO get 'name' board comments
-    return HttpResponse('name = ' + name)
+    model = models.Model()
+    board = models.get_simple_board(adr=name)
+    all_treads = model.get_all_treads(board)
+
+    treads = {}
+    for tread in all_treads:
+        treads[tread] = model.get_all_records_from(tread, board)
+
+    template = Template('boards.html')
+    context = Context({'treads': treads, 'board': board, 
+                       'all_treads': all_treads})
+    return HttpResponse(template.render(context))
 
 def ip(request):
     return HttpResponse(Template('ip.html').render({}))

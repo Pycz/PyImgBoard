@@ -65,3 +65,32 @@ body {
 	float: left;
     width: 200px;
 }
+
+#post-from {
+	
+}
+
+#post-form table {
+	border-spacing: 1px;
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: separate;
+}
+
+#post-form input[type="text"] {
+	width: 232px;
+}
+
+#post-form input[type="submit"] {
+	width: 57px;
+	margin: 0;
+}
+
+#post-form tr td:first-child {
+	background-color: #98E;
+	color: black;
+	font-weight: bold;
+	border: 1px solid black;
+	padding: 0 5px;
+	font-size: 10pt;
+}
