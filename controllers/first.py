@@ -6,12 +6,12 @@ from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
 
-
 def test(request):
     template = Template('addtread.html')
     context = Context({})
     result = template.render(context)
     return HttpResponse(result)
+
 
 def handle_new_tread(request):
     #lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])
@@ -63,22 +63,29 @@ def other(request):
     return HttpResponse(request['REQUEST_URI'])
 
 def board(request, name):
-    #TODO get 'name' board comments
-    return HttpResponse('name = ' + name)
+    model = models.Model()
+    board = models.get_simple_board(adr=name)
+    all_treads = model.get_all_treads(board)
+
+    treads = {}
+    for tread in all_treads:
+        treads[tread.id] = model.get_all_records_from(tread, board)
+
+    template = Template('boards.html')
+    context = Context({'treads': treads, 'board': board, 
+                       'all_treads': all_treads})
+    return HttpResponse(template.render(context))
 
 def ip(request):
-    return HttpResponse(Template('ip.html').render({}))
+    return HttpResponse(Template('ip.html').render(Context({})))
 
 def head(request):
     if request.method == 'GET':
         st = 'GET = ' + str(request.GET) + '<br>'
     else:
         st = 'POST = ' + str(request.POST) + '<br>'
-        '''st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
-        st += 'email: ' + request.POST['email'] + '<br>'
-'''
-    mes = 'gogog test dhfo'
-    #st += wakaba(strip_tags(request.POST['post'])) + '<br>'
+
+    st += wakaba(strip_tags(request.POST['post'])) + '<br>'
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)

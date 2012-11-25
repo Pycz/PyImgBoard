@@ -4,6 +4,7 @@ import sqlite3
 import time
 import re
 import codecs
+import curses.ascii
 
 sstr_pat = re.compile("[a-zA-Z0-9_]")
 sstr_num = re.compile("[0-9]")
@@ -61,6 +62,10 @@ def wakaba(s):
                 break
 
         i += d + 1
+    
+    s = insert_quote(s)
+    s = insert_urls(s)
+    s = s.replace('\r\n', '<br>')
     return s
 
 
@@ -89,7 +94,7 @@ def replace(sym, s, open_i, close_i):
 
 def isgraph(char):
     chars = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-    if char.isalnum() or char in chars:
+    if not char.isspace() or char in chars:
         return True
     else:
         return False
@@ -100,6 +105,74 @@ def isdop(char):
         return True
     else:
         return False
+
+def insert_quote(s):
+    i = 0
+    tag = '<span style="color:#0000ff">'
+    end_tag = '</span>'
+    s = s.replace('&gt', '>')
+    while i < len(s):
+        if s[i] == '>' and isquote(s, i):
+            s = s[:i] + tag + s[i:]
+            i += len(tag)
+            j = s.find('\r\n', i)
+            if j <> -1:
+                s = s[:j] + end_tag + s[j:]
+                i = j + len(end_tag) + 2
+            else:
+                s += end_tag
+                break
+        else:
+            i += 1
+
+    return s
+            
+def isquote(s, i):
+    if i == 0 or (i - 2 >= 0 and s[i - 2:i] == '\r\n'):
+        print >> sys.stderr, 's[i - 1: i] = ' + s[i - 2: i]
+        return True
+    else:
+        return False
+
+
+def insert_urls(s):
+    tag = '<a target="_blank" href="'
+    mid_tag = '">'
+    end_tag = '</a>'
+    protocols = ['http:', 'https:', 'ftp:', 'mailto:', 'news:', 'irc:']
+
+    for prot in protocols:
+        i = 0
+        while i < len(s):
+            j = s.find(prot, i)
+            if j <> -1:
+                blank1 = s.find(' ', j)
+                blank2 = s.find('\r\n', j)
+                k = 0
+                if blank1 == -1 and blank2 == -1:
+                    blank = len(s)
+                elif blank1 <> -1 and blank2 <> -1:
+                    if blank1 < blank2:
+                        blank = blank1
+                    else:
+                        blank = blank2
+                elif blank1 == -1 and blank2 <> -1:
+                    blank = blank2
+                else:
+                    blank = blank1
+
+                if protocols.index(prot) < 3:
+                    d = '//'
+                else:
+                    d = ''
+                s = s[:j] + tag + s[j:j + len(prot)] + d \
+                    + s[j + len(prot):blank] \
+                    + mid_tag + s[j + len(prot):blank] \
+                    + end_tag + s[blank:]
+                i = blank + len(tag + mid_tag + end_tag + d)
+            else:
+                break
+    return s
 
 def now_timestamp():
     return sqlite3.TimestampFromTicks(time.time())
