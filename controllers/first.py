@@ -5,7 +5,7 @@ from lib.http import HttpResponse, HttpRequest, Http404
 from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
-import lib.model_utils
+
 
 
 def index(request):
@@ -48,11 +48,11 @@ def head(request):
         st = 'GET = ' + str(request.GET) + '<br>'
     else:
         st = 'POST = ' + str(request.POST) + '<br>'
-        st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
+        '''st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
         st += 'email: ' + request.POST['email'] + '<br>'
-
+'''
     mes = 'gogog test dhfo'
-    st += wakaba(strip_tags(request.POST['post'])) + '<br>'
+    #st += wakaba(strip_tags(request.POST['post'])) + '<br>'
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
@@ -60,16 +60,20 @@ def head(request):
 def adminum(request):
     model = models.Model()
     if request.method == 'POST':
-        if request.has_key("сname"):
-            model.add_new_category(lib.model_utils.get_simple_category(
-                                            lib.utils.get_normal_string(request["cname"])))
-        else:
-            model.add_new_board_to_category(
-                                            lib.model_utils.get_simple_board(
-                                                            lib.utils.get_normal_string(request["bname"]),
-                                                            lib.utils.get_normal_string(request["badr"]), 
-                                                            request["cat"])
-                                            , model.get_category_by_id(request["cat"]))
+        try: 
+            if request.POST.has_key('cname'):
+                model.add_new_category(models.get_simple_category(
+                                                lib.utils.get_normal_string(request.POST["cname"])))
+            else:
+                model.add_new_board_to_category(
+                                                models.get_simple_board(
+                                                                lib.utils.get_normal_string(request.POST["bname"]),
+                                                                lib.utils.get_normal_string(request.POST["badr"]), 
+                                                                request.POST["cat"])
+                                                , model.get_category_by_id(request.POST["cat"]))
+        except KeyError as e:
+            return HttpResponse(str(request.POST)+str(request.POST.has_key('cname')))
+        
     categ = model.get_all_categorys()
     boards = {}
     for cat in categ:

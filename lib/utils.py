@@ -107,8 +107,10 @@ def now_timestamp():
 
 # ITS A FUCKING BYCICLE I think
 def get_normal_string(s):
-    ret = str([x for x in s if sstr_pat.match(x)])
+    ret = ""
+    fuuu = [str(x) for x in s if sstr_pat.match(x)]
+    for i in fuuu:
+        ret+=i
     if (not ret) or (sstr_num.match(ret[0])):
-        ret+="New"
+        ret = "New" + ret
     return ret 
-

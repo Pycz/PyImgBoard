@@ -27,7 +27,7 @@
 		<h4>Add new category:</h4>
 		<form method="post" action="/adminum">
 			<p>
-				Category name: <input type="text" name="сname">
+				Category name: <input type="text" name="cname">
 			</p>
 			<p>
 				<input type="submit" value="Добавить">
@@ -37,10 +37,12 @@
 			<h4>Exist boards</h4>
 		<br>
 		{% for categ in categorys %}
-			<p> <h5>{{categ.name}}</h3>
+			<p> <h5>{{categ.name}}</h5>
 			<br>
 			{% for lol in boards_dict %}
-			    <br>{{lol.key}} = {{lol.value}}
+                            {% for bo in lol.value %}
+			    <br>{{bo.name}}
+                            {% endfor %}
 			{% endfor %}
 		{% endfor %}
 	</body>
