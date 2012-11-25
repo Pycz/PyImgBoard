@@ -2,8 +2,28 @@
 import sqlite3
 from lib.utils import now_timestamp
 from lib.utils import get_root_dir
-import lib.utils
-import lib.model_utils
+
+def get_simple_board(name = "Random", adr = "b", category_id = 1):
+    return Board(1, name, adr, adr.upper(), adr.upper(), category_id)
+
+def get_simple_tread(last_time = now_timestamp()):
+    return Tread(1, last_time)
+
+def get_simple_record(name = "Anonymous",
+                      email = "",
+                      title = "",
+                      post = "",
+                      image = "",
+                      tread_id = ""):
+    return Record(name = name,
+                      email = email,
+                      title = title,
+                      post = post,
+                      image = image,
+                      tread_id = tread_id)
+    
+def get_simple_category(name = "Misc"):
+    return Category(T_id = 1, name = name)
 
 class Category:
     '''Implement all categorys'''
@@ -92,7 +112,7 @@ class Model:
     def _list_of_tuple_to_list_of_obj(self, list_of_t, Obj):
         return [self._tuple_to_obj(tup, Obj) for tup in list_of_t]
      
-    def insert_record_into(self, tread, record, board = lib.model_utils.get_simple_board()):
+    def insert_record_into(self, tread, record, board = get_simple_board()):
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
         
@@ -112,7 +132,7 @@ class Model:
         
         self.conection.commit()
         
-    def get_all_records_from(self, tread, board = lib.model_utils.get_simple_board()):
+    def get_all_records_from(self, tread, board = get_simple_board()):
         its_records = "records" + board.records_name
         #its_treads = "treads" + board
         
@@ -124,7 +144,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)
     
-    def get_tread_by_id(self, T_id, board = lib.model_utils.get_simple_board()):
+    def get_tread_by_id(self, T_id, board = get_simple_board()):
         its_treads = "treads" + board.records_name
         
         self.cur.execute("""
@@ -134,7 +154,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_all_treads(self, board = lib.model_utils.get_simple_board()):
+    def get_all_treads(self, board = get_simple_board()):
         its_treads = "treads" + board.records_name
         
         self.cur.execute("""
@@ -143,7 +163,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_all_treads_by_date(self, board = lib.model_utils.get_simple_board()):
+    def get_all_treads_by_date(self, board = get_simple_board()):
         "Returns treads in inverse"
         
         its_treads = "treads" + board.records_name
@@ -154,7 +174,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_y_treads_from_x_position(self, x, y, board = lib.model_utils.get_simple_board()):
+    def get_y_treads_from_x_position(self, x, y, board = get_simple_board()):
         '''Returns y treads in inverse order 
         Numering from 1'''
         its_treads = "treads" + board.records_name
@@ -168,7 +188,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread) 
     
-    def get_last_x_records_from_tread(self, tread, x, board = lib.model_utils.get_simple_board()):
+    def get_last_x_records_from_tread(self, tread, x, board = get_simple_board()):
         its_records = "records" + board.records_name
         
         self.cur.execute(
@@ -188,8 +208,8 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)              
     
-    def add_new_board_to_category(self, board = lib.model_utils.get_simple_board(),
-                                  category = lib.model_utils.get_simple_category()):
+    def add_new_board_to_category(self, board = get_simple_board(),
+                                  category = get_simple_category()):
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
         
@@ -230,23 +250,40 @@ class Model:
            
         self.conection.commit() 
         
-    def get_all_boards_from_category(self, category = lib.model_utils.get_simple_category()):
-        self.cur.execute(
-        """
-        SELECT * FROM boards WHERE category_id = (:category_id) ORDER BY name 
-        """ , {"category_id": str(category.id)}
-        )
+    def get_all_boards_from_category(self, category = get_simple_category()):
+        x = True
+        while x:
+            try:
+                self.cur.execute(
+                """
+                SELECT * FROM boards WHERE category_id = (:category_id) ORDER BY name 
+                """ , {"category_id": str(category.id)}
+                )
+                
+            except:
+                pass
+            else:
+                x= False
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Board)
     
     def get_all_categorys(self):
-        self.cur.execute(
-        """
-        SELECT * FROM categorys ORDER BY name 
-        """
-        )
+        x= True
+        while x:
+            try:
+        
+                self.cur.execute(
+                """
+                SELECT * FROM categorys ORDER BY name 
+                """
+                )
+                
+            except:
+                pass
+            else:
+                x = False
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Category) 
            
-    def add_new_category(self, category = lib.model_utils.get_simple_category()):       
+    def add_new_category(self, category = get_simple_category()):       
         self.cur.execute(
         """
         SELECT count(*) FROM categorys WHERE name = :name 
@@ -277,4 +314,6 @@ class Model:
         
         self.conection.close()
         
-    
+mod = Model()
+w = mod.get_all_categorys()   
+print [(x.id, x.name) for x in w]

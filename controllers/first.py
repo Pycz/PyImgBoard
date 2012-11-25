@@ -4,7 +4,6 @@ from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
 import models 
 import lib.utils
-import lib.model_utils
 
 
 def index(request):
@@ -56,11 +55,11 @@ def adminum(request):
     model = models.Model()
     if request.method == 'POST':
         if request.has_key("сname"):
-            model.add_new_category(lib.model_utils.get_simple_category(
+            model.add_new_category(models.get_simple_category(
                                             lib.utils.get_normal_string(request["cname"])))
         else:
             model.add_new_board_to_category(
-                                            lib.model_utils.get_simple_board(
+                                            models.get_simple_board(
                                                             lib.utils.get_normal_string(request["bname"]),
                                                             lib.utils.get_normal_string(request["badr"]), 
                                                             request["cat"])
