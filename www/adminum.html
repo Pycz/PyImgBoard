@@ -5,43 +5,43 @@
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
-		<title>Админка</title>
+		<title>Admin</title>
 	</head>
         <body>
-<H1>Админка, ага</h1>
+<H1>Admin</h1>
 <br/>
 <br/>
 
-<h4>Добавить доску:</h4>
+<h4>Add new board:</h4>
 <form method="post" action="/adminum">
       <p>
-         Название доски: <input type="text" name="bname">
+         Board name: <input type="text" name="bname">
       </p>
       <p>
-         Адрес доски: <input type="text" name="badr">
+         Board address: <input type="text" name="badr">
       </p>
       
-          <p>Категория: <br>
+          <p>Category: <br>
         {% for сatal in categorys %}
-      <p> <input type="radio" name="cat" value="{{ сatal.id }}">{{ сatal.name }}</p>
-	{% endfor %}
+			<p> <input type="radio" name="cat" value="{{ сatal.id }}">{{ сatal.name }}</p>
+		{% endfor %}
           
       <p>
           <input type="submit" value="Добавить">
       </p>   
 </form> 
 <br>
-<h4>Добавить категорию:</h4>
+<h4>Add new category:</h4>
 <form method="post" action="/adminum">
       <p>
-         Название категории: <input type="text" name="сname">
+         Category name: <input type="text" name="сname">
       </p>
       <p>
           <input type="submit" value="Добавить">
       </p>   
 </form> 
 <br>
-<h5>Что есть сейчас:</h5>
+<h5>Exist boards</h5>
 <br>
           
       {% for сatal in categorys %}
@@ -50,7 +50,7 @@
             {% for lol in boards_dict.catal %}
             {% if lol.in %}
             <p>{{ lol.name }} Адр: {{ lol.adr }}</p>
-            {% ensif %}
+            {% endif %}
             {% endfor %}
 	{% endfor %}
         

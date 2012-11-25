@@ -3,7 +3,7 @@ import settings
 import sqlite3
 import time
 import re
-
+import codecs
 
 sstr_pat = re.compile("[a-zA-Z0-9_]")
 sstr_num = re.compile("[0-9]")
@@ -23,6 +23,9 @@ def get_template_file(template_name):
     return template
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> test
 def strip_tags(s):
     new_s = ''
     for w in s:
@@ -43,33 +46,25 @@ def wakaba(s):
         for x in sym:
             stacks[d * x] = []
 
-    sop = ''
-    aaa = ''
     while i < len(s):
         d = 0
         for w in sym:
-#            aaa += 'w = ' + w + ' and s[i] = ' + s[i] + '<br>'
             if s[i] == w:
                 if i + 1 < len(s) and s[i + 1] == w:
                     dw = w + w
                     if isopen(dw, s, i):
                         stacks[dw].append(i)
-#                        sop += 'plus: ' + dw + '<br>'
                         d = 1
                     elif isclose(dw, s, i) and len(stacks[dw]) <> 0:
-#                        sop += 'minus: ' + dw + '<br>'
                         i, s = replace(dw, s, stacks[dw].pop(), i)
                         d = 1
                 elif isopen(w, s, i):
                     stacks[w].append(i)
-#                    sop += 'plus: ' + w + 'and s[i] = ' + s[i] + '<br>'
                 elif isclose(w, s, i) and len(stacks[w]) <> 0:
-#                    sop += 'minus: ' + w + '<br>'
                     i, s = replace(w, s, stacks[w].pop(), i)
                 break
 
         i += d + 1
-
     return s
 
 
@@ -109,7 +104,11 @@ def isdop(char):
         return True
     else:
         return False
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> test
 def now_timestamp():
     return sqlite3.TimestampFromTicks(time.time())
 
@@ -120,4 +119,8 @@ def get_normal_string(s):
     if (not ret) or (sstr_num.match(ret[0])):
         ret+="New"
     return ret 
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+
+>>>>>>> test

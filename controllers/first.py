@@ -74,8 +74,9 @@ def adminum(request):
     boards = {}
     for cat in categ:
         boards[cat] = model.get_all_boards_from_category(cat)
-    return HttpResponse(Template('adminum.html').render({
+
+    return HttpResponse(Template('admin.html').render(Context({
                                                          "categorys": categ, 
-                                                         "boards_dict": boards}))
+                                                         "boards_dict": boards})))
 
           

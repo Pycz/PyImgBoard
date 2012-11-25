@@ -142,6 +142,7 @@ class Template:
                     self._ungetc(-1)
                     tag_name = self._get_tag_name()
                     if self.tags.has_key(tag_name):
+                        print >> sys.stderr, 'tag = ' + tag_name
                         self.tags_stack.append(tag_name)
                         tag_result = self.tags[tag_name](do)
                         self.tags_stack.pop()
@@ -177,13 +178,14 @@ class Template:
         last_state = False
         char = self.template.read(1)
         while (len(char) == 1):
+            print >> sys.stderr, 'char = ' + char
             if state == 0:
                 if char.isalpha() or char == '_':
                     self._ungetc(-1)
                     for_var_name = self._variable_name()
                     state = 1
                 elif char <> ' ':
-                    raise SyntaxError('only blank can be between tag and in', self._whoami())
+                    raise SyntaxError('only blank can be between tag and in char = ' + char + ' .', self._whoami(), daddy=self._whosdaddy())
 
             elif state == 1:
                 if char == 'i':
@@ -242,12 +244,25 @@ class Template:
                 else:
                     self._body(False)
 
+<<<<<<< HEAD
             elif type(in_var_value) == type({}):
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value.keys():
                     self.template.seek(start_loop)
                     self.context.set(for_var_name, for_var_value)
                     result += self._body()
+=======
+            start_loop = self.template.tell()
+            for for_var_value in in_var_value:
+                self.template.seek(start_loop)
+                print >> sys.stderr, 'context = ' + str(self.context)
+                self.context.set(for_var_name, for_var_value)
+                result += self._body()
+            if len(in_var_value) <> 0:
+                self.context.del_var(for_var_name)
+            else:
+                self._body(False)
+>>>>>>> test
 
                 if len(in_var_value) <> 0:
                     self.context.del_var(for_var_name)
