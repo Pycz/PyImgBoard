@@ -21,9 +21,9 @@
          Адрес доски: <input type="text" name="badr">
       </p>
       
-      <p>Категория: <br>
-        {% for с in categorys %}
-      <p> <input type="radio" name="cat" value="{{ c.id }}">{{ c.name }}</p>
+          <p>Категория: <br>
+        {% for сatal in categorys %}
+      <p> <input type="radio" name="cat" value="{{ сatal.id }}">{{ сatal.name }}</p>
 	{% endfor %}
           
       <p>
@@ -43,12 +43,14 @@
 <br>
 <h5>Что есть сейчас:</h5>
 <br>
-        {% for с in categorys %}
-      <p><h6>{{ c.name }}</h6></p>
+          
+      {% for сatal in categorys %}
+      <p><h6>{{ сatal.name }}</h6></p>
         <br>
-            {% for x in categorys.c %}
-            <p>{{ x.name }} Адр: {{ x.adr }}</p>
-
+            {% for lol in boards_dict %}
+            {% if lol.in %}
+            <p>{{ lol.name }} Адр: {{ lol.adr }}</p>
+            {% ensif %}
             {% endfor %}
 	{% endfor %}
         

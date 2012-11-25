@@ -3,6 +3,7 @@ import sqlite3
 from lib.utils import now_timestamp
 from lib.utils import get_root_dir
 import lib.utils
+import lib.model_utils
 
 class Category:
     '''Implement all categorys'''
@@ -91,7 +92,7 @@ class Model:
     def _list_of_tuple_to_list_of_obj(self, list_of_t, Obj):
         return [self._tuple_to_obj(tup, Obj) for tup in list_of_t]
      
-    def insert_record_into(self, tread, record, board = lib.utils.get_simple_board()):
+    def insert_record_into(self, tread, record, board = lib.model_utils.get_simple_board()):
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
         
@@ -111,7 +112,7 @@ class Model:
         
         self.conection.commit()
         
-    def get_all_records_from(self, tread, board = lib.utils.get_simple_board()):
+    def get_all_records_from(self, tread, board = lib.model_utils.get_simple_board()):
         its_records = "records" + board.records_name
         #its_treads = "treads" + board
         
@@ -123,7 +124,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)
     
-    def get_tread_by_id(self, T_id, board = lib.utils.get_simple_board()):
+    def get_tread_by_id(self, T_id, board = lib.model_utils.get_simple_board()):
         its_treads = "treads" + board.records_name
         
         self.cur.execute("""
@@ -133,7 +134,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_all_treads(self, board = lib.utils.get_simple_board()):
+    def get_all_treads(self, board = lib.model_utils.get_simple_board()):
         its_treads = "treads" + board.records_name
         
         self.cur.execute("""
@@ -142,7 +143,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_all_treads_by_date(self, board = lib.utils.get_simple_board()):
+    def get_all_treads_by_date(self, board = lib.model_utils.get_simple_board()):
         "Returns treads in inverse"
         
         its_treads = "treads" + board.records_name
@@ -153,7 +154,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
     
-    def get_y_treads_from_x_position(self, x, y, board = lib.utils.get_simple_board()):
+    def get_y_treads_from_x_position(self, x, y, board = lib.model_utils.get_simple_board()):
         '''Returns y treads in inverse order 
         Numering from 1'''
         its_treads = "treads" + board.records_name
@@ -167,7 +168,7 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread) 
     
-    def get_last_x_records_from_tread(self, tread, x, board = lib.utils.get_simple_board()):
+    def get_last_x_records_from_tread(self, tread, x, board = lib.model_utils.get_simple_board()):
         its_records = "records" + board.records_name
         
         self.cur.execute(
@@ -187,8 +188,8 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)              
     
-    def add_new_board_to_category(self, board = lib.utils.get_simple_board(),
-                                  category = lib.utils.get_simple_category()):
+    def add_new_board_to_category(self, board = lib.model_utils.get_simple_board(),
+                                  category = lib.model_utils.get_simple_category()):
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
         
@@ -229,7 +230,7 @@ class Model:
            
         self.conection.commit() 
         
-    def get_all_boards_from_category(self, category = lib.utils.get_simple_category()):
+    def get_all_boards_from_category(self, category = lib.model_utils.get_simple_category()):
         self.cur.execute(
         """
         SELECT * FROM boards WHERE category_id = (:category_id) ORDER BY name 
@@ -245,7 +246,7 @@ class Model:
         )
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Category) 
            
-    def add_new_category(self, category = lib.utils.get_simple_category()):       
+    def add_new_category(self, category = lib.model_utils.get_simple_category()):       
         self.cur.execute(
         """
         SELECT count(*) FROM categorys WHERE name = :name 
