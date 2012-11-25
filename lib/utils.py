@@ -1,5 +1,12 @@
 import sys
 import settings
+import sqlite3
+import time
+import re
+
+
+sstr_pat = re.compile("[a-zA-Z0-9_]")
+sstr_num = re.compile("[0-9]")
 
 def get_root_dir():
     return sys.path[0]
@@ -15,6 +22,7 @@ def get_template_file(template_name):
             pass
     return template
 
+<<<<<<< HEAD
 def strip_tags(s):
     new_s = ''
     for w in s:
@@ -101,3 +109,15 @@ def isdop(char):
         return True
     else:
         return False
+=======
+def now_timestamp():
+    return sqlite3.TimestampFromTicks(time.time())
+
+
+# ITS A FUCKING BYCICLE I think
+def get_normal_string(s):
+    ret = str([x for x in s if sstr_pat.match(x)])
+    if (not ret) or (sstr_num.match(ret[0])):
+        ret+="New"
+    return ret 
+>>>>>>> origin/test
