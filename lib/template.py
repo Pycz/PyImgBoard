@@ -230,20 +230,31 @@ class Template:
             self._body(False)
         else:
             in_var_value = self.context.get(in_var_name)
-            if type(in_var_value) != type([]):
-                #TODO other error need
-                raise SyntaxError('type of var after in does not support', self._whoami())
+            if type(in_var_value) == type([]):
+                start_loop = self.template.tell()
+                for for_var_value in in_var_value:
+                    self.template.seek(start_loop)
+                    self.context.set(for_var_name, for_var_value)
+                    result += self._body()
 
-            start_loop = self.template.tell()
-            for for_var_value in in_var_value:
-                self.template.seek(start_loop)
-                self.context.set(for_var_name, for_var_value)
-                result += self._body()
-            if len(in_var_value) <> 0:
-                self.context.del_var(for_var_name)
+                if len(in_var_value) <> 0:
+                    self.context.del_var(for_var_name)
+                else:
+                    self._body(False)
+
+            elif type(in_var_value) == type({}):
+                start_loop = self.template.tell()
+                for for_var_value in in_var_value.keys():
+                    self.template.seek(start_loop)
+                    self.context.set(for_var_name, for_var_value)
+                    result += self._body()
+
+                if len(in_var_value) <> 0:
+                    self.context.del_var(for_var_name)
+                else:
+                    self._body(False)
             else:
-                self._body(False)
-
+                raise SyntaxError('type of var after in does not support', self._whoami())
         return result
 
     def _condition(self, do=True):
