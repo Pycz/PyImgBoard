@@ -187,3 +187,7 @@ def get_normal_string(s):
     if (not ret) or (sstr_num.match(ret[0])):
         ret = "New" + ret
     return ret 
+
+def get_board_name_from_referer(s):
+    x = s.split("/")
+    return x[-2]

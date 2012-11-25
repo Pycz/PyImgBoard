@@ -5,7 +5,13 @@ from lib.http import HttpResponse, HttpRequest, Http404
 from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
+
 import sys
+
+
+def handle_new_tread(request):
+    model = models.Model()
+    request.POST
 
 def index(request):
     model = models.Model()
