@@ -46,18 +46,6 @@ def ip(request):
 def head(request):
     if request.method == 'GET':
         st = 'GET = ' + str(request.GET) + '<br>'
-    else:
-        st = 'POST = ' + str(request.POST) + '<br>'
-        '''st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
-        st += 'email: ' + request.POST['email'] + '<br>'
-<<<<<<< HEAD
-
-    st += wakaba(strip_tags(request.POST['post'])) + '<br>'
-=======
-'''
-    mes = 'gogog test dhfo'
-    #st += wakaba(strip_tags(request.POST['post'])) + '<br>'
->>>>>>> upstream/master
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
