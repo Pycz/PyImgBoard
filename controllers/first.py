@@ -11,7 +11,10 @@ import sys
 
 def handle_new_tread(request):
     model = models.Model()
-    request.POST
+    if request.POST["pname"]=='':
+        request.POST["pname"]="Anonymous" 
+    NewRecord = models.get_simple_record(name = request.POST["pname"], mail = request.POST["pmail"],
+                                          title = request.POST["ptitle"],ppost = request.POST["ppost"])
 
 def index(request):
     model = models.Model()
