@@ -1,0 +1,58 @@
+<html>
+	<head>
+	
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link href="css/style.css" rel="stylesheet" type="text/css"/>
+		<title>Админка</title>
+	</head>
+        <body>
+<H1>Админка, ага</h1>
+<br/>
+<br/>
+
+<h4>Добавить доску:</h4>
+<form method="post" action="/adminum">
+      <p>
+         Название доски: <input type="text" name="bname">
+      </p>
+      <p>
+         Адрес доски: <input type="text" name="badr">
+      </p>
+      
+          <p>Категория: <br>
+        {% for сatal in categorys %}
+      <p> <input type="radio" name="cat" value="{{ сatal.id }}">{{ сatal.name }}</p>
+	{% endfor %}
+          
+      <p>
+          <input type="submit" value="Добавить">
+      </p>   
+</form> 
+<br>
+<h4>Добавить категорию:</h4>
+<form method="post" action="/adminum">
+      <p>
+         Название категории: <input type="text" name="сname">
+      </p>
+      <p>
+          <input type="submit" value="Добавить">
+      </p>   
+</form> 
+<br>
+<h5>Что есть сейчас:</h5>
+<br>
+          
+      {% for сatal in categorys %}
+      <p><h6>{{ сatal.name }}</h6></p>
+        <br>
+            {% for lol in boards_dict.catal %}
+            {% if lol.in %}
+            <p>{{ lol.name }} Адр: {{ lol.adr }}</p>
+            {% ensif %}
+            {% endfor %}
+	{% endfor %}
+        
+        </body>
+</html>
