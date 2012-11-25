@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
-from lib.utils import strip_tags
+from lib.utils import strip_tags, wakaba
 import models 
 import sys
 
@@ -49,6 +49,8 @@ def head(request):
         st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
         st += 'email: ' + request.POST['email'] + '<br>'
 
+    mes = 'gogog test dhfo'
+    st += wakaba(strip_tags(request.POST['post'])) + '<br>'
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
