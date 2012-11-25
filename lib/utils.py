@@ -117,4 +117,4 @@ def get_normal_string(s):
 
 def get_board_name_from_referer(s):
     x = s.split("/")
-    return x[-1]
+    return x[-2]
