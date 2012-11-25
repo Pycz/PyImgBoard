@@ -6,7 +6,9 @@ from lib.utils import strip_tags, wakaba
 import models 
 import lib.utils
 
-
+def handle_new_tread(request):
+    model = models.Model()
+    request.POST
 
 def index(request):
     model = models.Model()
