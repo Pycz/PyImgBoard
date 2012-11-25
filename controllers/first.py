@@ -75,12 +75,13 @@ def adminum(request):
             return HttpResponse(str(request.POST)+str(request.POST.has_key('cname')))
         
     categ = model.get_all_categorys()
-    boards = {}
+    newcateg = []
     for cat in categ:
-        boards[cat] = model.get_all_boards_from_category(cat)
+        catboard = model.get_all_boards_from_category(cat)
+        newcateg.append({cat.name: catboard})
 
     return HttpResponse(Template('admin.html').render(Context({
                                                          "categorys": categ, 
-                                                         "boards_dict": boards})))
+                                                         "categ_list": newcateg})))
 
           
