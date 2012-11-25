@@ -8,8 +8,16 @@ import lib.utils
 import sys
 
 def index(request):
+    model = models.Model()
+    categ = model.get_all_categorys()
+    newcateg = []
+    for cat in categ:
+        catboard = model.get_all_boards_from_category(cat)
+        newcateg.append({cat.name: catboard})
+        
     template = Template('index.html')
-    context = Context({'welcome_text': 'Добро пожаловать. Снова.'})
+    con = {"categorys": categ, "categ_list": newcateg, 'welcome_text': 'Добро пожаловать. Снова.'}
+    context = Context(con)
     result = template.render(context)
     return HttpResponse(result)
 
