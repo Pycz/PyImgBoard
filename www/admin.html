@@ -35,12 +35,15 @@
 		</form> 
 		<br>
 		<h4>Exist boards</h4>
+                
 		{% for categ in categ_list %}
                     {% for post in categ %}
+                    <div style="float: left; padding-right: 30px">
                         <h5>{{post.key}}</h5>
                             {% for bo in post.value %}
 			    <br>{{bo.name}}
                             {% endfor %}
+                    </div>
                      {% endfor %}
 		{% endfor %}
 	</body>
