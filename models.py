@@ -2,6 +2,12 @@
 import sqlite3
 from lib.utils import now_timestamp
 from lib.utils import get_root_dir
+<<<<<<< HEAD
+=======
+import lib.utils
+
+
+>>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
 
 def get_simple_board(name = "Random", adr = "b", category_id = 1):
     return Board(1, name, adr, adr.upper(), adr.upper(), category_id)
@@ -24,6 +30,12 @@ def get_simple_record(name = "Anonymous",
     
 def get_simple_category(name = "Misc"):
     return Category(T_id = 1, name = name)
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
 
 class Category:
     '''Implement all categorys'''
@@ -251,6 +263,7 @@ class Model:
         self.conection.commit() 
         
     def get_all_boards_from_category(self, category = get_simple_category()):
+<<<<<<< HEAD
         x = True
         while x:
             try:
@@ -264,6 +277,13 @@ class Model:
                 pass
             else:
                 x= False
+=======
+        self.cur.execute(
+        """
+        SELECT * FROM boards WHERE category_id = (:category_id) ORDER BY name 
+        """ , {"category_id": str(category.id)}
+        )
+>>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Board)
     
     def get_all_categorys(self):

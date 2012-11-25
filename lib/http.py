@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
+=======
+import urllib
+>>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
 from lib import utils
 from lib.headers import HttpHeaders, HttpStatusCode
 
@@ -72,7 +76,8 @@ class HttpRequest:
             par_split = all_params[i].split('=')            
             try:
                 param_name = par_split[0]
-                param_value = par_split[1]
+                param_value = urllib.unquote_plus(par_split[1])
+
             except IndexError:
                 break
             params[param_name] = param_value
@@ -92,6 +97,9 @@ class HttpRequest:
             return False
         else:
             return True
+        
+    def has_key(self, key):
+        return self._headers.has_key(key)
         
 
 class Http404(Exception, HttpResponse):

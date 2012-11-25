@@ -183,7 +183,11 @@ class Template:
                     for_var_name = self._variable_name()
                     state = 1
                 elif char <> ' ':
+<<<<<<< HEAD
                     raise SyntaxError('only blank can be between tag and in strange', self._whoami())
+=======
+                    raise SyntaxError('only blank can be between tag and in char = ' + char + ' .', self._whoami(), daddy=self._whosdaddy())
+>>>>>>> dea9d441c63a0a9c6123a4e6a97b239b4db78865
 
             elif state == 1:
                 if char == 'i':
@@ -229,20 +233,35 @@ class Template:
         if not do:
             self._body(False)
         else:
+            print >> sys.stderr, 'in_var_name = ' + in_var_name
             in_var_value = self.context.get(in_var_name)
-            if type(in_var_value) != type([]):
-                #TODO other error need
-                raise SyntaxError('type of var after in does not support', self._whoami())
+            if type(in_var_value) is list:
+                start_loop = self.template.tell()
+                for for_var_value in in_var_value:
+                    self.template.seek(start_loop)
+                    self.context.set(for_var_name, for_var_value)
+                    result += self._body()
 
-            start_loop = self.template.tell()
-            for for_var_value in in_var_value:
-                self.template.seek(start_loop)
-                self.context.set(for_var_name, for_var_value)
-                result += self._body()
-            if len(in_var_value) <> 0:
-                self.context.del_var(for_var_name)
+                if len(in_var_value) <> 0:
+                    self.context.del_var(for_var_name)
+                else:
+                    self._body(False)
+
+            elif type(in_var_value) is dict:
+                start_loop = self.template.tell()
+                for for_var_value in in_var_value.keys():
+                    self.template.seek(start_loop)
+                    d = {'key': for_var_value, 'value': in_var_value[for_var_value]}
+                    self.context.set(for_var_name, d)
+                    result += self._body()
+
+                if len(in_var_value) <> 0:
+                    self.context.del_var(for_var_name)
+                else:
+                    self._body(False)
             else:
-                self._body(False)
+                print >> sys.stderr, in_var_name + 'aaa = ' + str(in_var_value)
+                raise SyntaxError('type of var after in does not support - ', self._whoami())
 
         return result
 
@@ -361,6 +380,7 @@ class Template:
                         state = 0
                 else:
                     result += buf + char
+                    state = 0
 
             char = self.template.read(1)
         
@@ -651,6 +671,7 @@ class Context:
     def get(self, key):
         keys = key.split('.')
         result = self.context.get(keys[0])
+        print >> sys.stderr, 'result = ' + str(result)
         if not result:
             return ''
         if isinstance(result, (types.FunctionType,
@@ -659,8 +680,9 @@ class Context:
             result = result()
         
         for i in xrange(1, len(keys)):
-            if result is dict:
+            if type(result) is dict:
                 result = result.get(keys[i])
+                print >> sys.stderr, 'r = ' + str(result)
             elif not getattr(result, keys[i], None) is None:
                 attr = getattr(result, keys[i])
                 if not isinstance(attr, (types.FunctionType,
@@ -669,7 +691,7 @@ class Context:
                     result = attr
                 else:
                     result = attr()
-            elif result is list and keys[i] is int:
+            elif type(result) is list and type(keys[i]) is int:
                 result = result[keys[i]]
             else:
                 raise SyntaxError('error type in context',

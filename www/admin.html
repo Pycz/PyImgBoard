@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link href="css/style.css" rel="stylesheet" type="text/css"/>		
+	</head>
+	<body>
+		<h1>Admin</h1>
+		<br/>
+		<br/>
+		<h4>Add new board:</h4>
+		<form method="post" action="/adminum">
+			<p>
+				Board name: <input type="text" name="bname">
+			</p>
+			<p>
+				Board address: <input type="text" name="badr">
+			</p>
+			<p>Category:<br>
+				{% for categ in categorys %}
+					<p> <input type="radio" name="cat" value="{{categ.id}}" />{{categ.name}}
+				{% endfor %}
+			<p>
+				<input type="submit" value="Добавить">
+			</p>
+		</form>
+		<br>
+		<h4>Add new category:</h4>
+		<form method="post" action="/adminum">
+			<p>
+				Category name: <input type="text" name="cname">
+			</p>
+			<p>
+				<input type="submit" value="Добавить">
+			</p>   
+		</form> 
+		<br>
+		<h4>Exist boards</h4>
+                
+		{% for categ in categ_list %}
+                    {% for post in categ %}
+                    <div style="float: left; padding-right: 30px">
+                        <h5>{{post.key}}</h5>
+                            {% for bo in post.value %}
+			    <br>{{bo.name}}
+                            {% endfor %}
+                    </div>
+                     {% endfor %}
+		{% endfor %}
+	</body>
+</html>
