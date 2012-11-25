@@ -230,7 +230,6 @@ class Template:
             self._body(False)
         else:
             in_var_value = self.context.get(in_var_name)
-            print >> sys.stderr, 'in var = ' + str(in_var_value)
             if type(in_var_value) is list:
                 start_loop = self.template.tell()
                 for for_var_value in in_var_value:

@@ -51,7 +51,6 @@ def head(request):
         st += 'post: ' + strip_tags(request.POST['post']) + '<br>'
         st += 'email: ' + request.POST['email'] + '<br>'
 
-    mes = 'gogog test dhfo'
     st += wakaba(strip_tags(request.POST['post'])) + '<br>'
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
