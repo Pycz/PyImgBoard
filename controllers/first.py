@@ -46,6 +46,10 @@ def ip(request):
 def head(request):
     if request.method == 'GET':
         st = 'GET = ' + str(request.GET) + '<br>'
+    else:
+        st = 'POST = ' + str(request.POST) + '<br>'
+
+    st += wakaba(strip_tags(request.POST['post'])) + '<br>'
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
