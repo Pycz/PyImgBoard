@@ -22,10 +22,6 @@ def get_template_file(template_name):
             pass
     return template
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> test
 def strip_tags(s):
     new_s = ''
     for w in s:
@@ -104,11 +100,7 @@ def isdop(char):
         return True
     else:
         return False
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> test
 def now_timestamp():
     return sqlite3.TimestampFromTicks(time.time())
 
@@ -119,8 +111,4 @@ def get_normal_string(s):
     if (not ret) or (sstr_num.match(ret[0])):
         ret+="New"
     return ret 
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
->>>>>>> test
