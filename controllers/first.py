@@ -60,7 +60,7 @@ def board(request, name):
 
     template = Template('boards.html')
     context = Context({'treads': treads, 'board': board, 
-                       'all_treads': all_treads})
+                       'all_treads': all_treads, 'size': len(treads)})
     return HttpResponse(template.render(context))
 
 def ip(request):
