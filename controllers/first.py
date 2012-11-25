@@ -54,11 +54,23 @@ def head(request):
 
 def adminum(request):
     model = models.Model()
-    if request.method == 'GET':
-        categ = model.get_all_categorys()
-        boards = {}
-        for cat in categ:
-            boards[cat.name] = model.get_all_boards_from_category(cat)
-        return HttpResponse(Template('adminum.html').render({
-                                                             "categorys": categ, 
-                                                             "boards_dict": boards})   
+    if request.method == 'POST':
+        if request.has_key("сname"):
+            model.add_new_category(lib.utils.get_simple_category(
+                                            lib.utils.get_normal_string(request["cname"])))
+        else:
+            model.add_new_board_to_category(
+                                            lib.utils.get_simple_board(
+                                                            lib.utils.get_normal_string(request["bname"]),
+                                                            lib.utils.get_normal_string(request["badr"]), 
+                                                            request["cat"])
+                                            , model.get_category_by_id(request["cat"]))
+    categ = model.get_all_categorys()
+    boards = {}
+    for cat in categ:
+        boards[cat] = model.get_all_boards_from_category(cat)
+    return HttpResponse(Template('adminum.html').render({
+                                                         "categorys": categ, 
+                                                         "boards_dict": boards}))
+
+          

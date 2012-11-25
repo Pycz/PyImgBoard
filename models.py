@@ -3,7 +3,6 @@ import sqlite3
 from lib.utils import now_timestamp
 from lib.utils import get_root_dir
 import lib.utils
-import sys
 
 class Category:
     '''Implement all categorys'''
@@ -188,7 +187,8 @@ class Model:
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Record)              
     
-    def add_new_board(self, board = lib.utils.get_simple_board()):
+    def add_new_board_to_category(self, board = lib.utils.get_simple_board(),
+                                  category = lib.utils.get_simple_category()):
         its_records = "records" + board.records_name
         its_treads = "treads" + board.treads_name
         
@@ -213,6 +213,20 @@ class Model:
             "tread_id" INTEGER NOT NULL 
         )""" % (its_records,))
         
+        self.cur.execute(
+        """
+        SELECT count(*) FROM boards WHERE name = :name 
+        """, {"name": board.name}
+        )
+        if self.cur.fetchone()[0]==0:       
+            self.conection.execute("""
+            INSERT INTO boards (name, adr, treads_name, records_name, category_id)
+            VALUES (:name, :adr, :treads_name, :records_name, :category_id)
+            """, 
+            {"name": board.name, "adr": board.adr, "treads_name": board.treads_name,
+              "records_name": board.records_name, "category_id": board.category_id}
+            )     
+           
         self.conection.commit() 
         
     def get_all_boards_from_category(self, category = lib.utils.get_simple_category()):
@@ -246,7 +260,13 @@ class Model:
             
             self.conection.commit()
         
-            
+    def get_category_by_id(self, T_id):
+        self.cur.execute(
+        """
+        SELECT * FROM categorys WHERE id = :id 
+        """, {"id": T_id}
+        )
+        return self.cur.fetchall()
                   
     def __del__(self):
         try:
