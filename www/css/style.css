@@ -94,3 +94,26 @@ body {
 	padding: 0 5px;
 	font-size: 10pt;
 }
+
+.post-info {
+	width: auto;
+	display: inline;
+}
+
+.name-block {
+	display: inline-block;
+}
+
+.name {
+	color: #117743;
+	font-weight: bold;
+}
+
+.date-time {
+}
+
+.post-num {
+}
+
+.post-message {
+}

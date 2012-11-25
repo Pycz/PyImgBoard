@@ -30,11 +30,19 @@
 		</form>
 		{{ size }}
 		<div class="board">
+			<hr>
 			{% for tread in treads %}
 				<div class="tread">
 				{% for post in tread.value %}
 					<div class="post">
-						{{post.name}}
+						<div class="post-info">
+							<span class="name-block"><span class="name">{{post.name}}</span></span>						
+							<span class="date-time">{{post.timestamp}}</span>
+							<span class="post-num">No. {{post.id}}</span>
+						</div>
+						<div class="post-message">
+							{{post.post}}
+						</div>
 					</div>
 				{% endfor %}
 				</div>

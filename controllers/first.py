@@ -59,15 +59,15 @@ def board(request, name):
 
     treads = {}
     for tread in all_treads:
-        treads[tread] = model.get_all_records_from(tread, board)
+        treads[tread.id] = model.get_all_records_from(tread, board)
 
     template = Template('boards.html')
     context = Context({'treads': treads, 'board': board, 
-                       'all_treads': all_treads, 'size': len(treads)})
+                       'all_treads': all_treads})
     return HttpResponse(template.render(context))
 
 def ip(request):
-    return HttpResponse(Template('ip.html').render({}))
+    return HttpResponse(Template('ip.html').render(Context({})))
 
 def head(request):
     if request.method == 'GET':
