@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+from lib.utils import now_timestamp
 from lib.template import Template, Context
 from lib.http import HttpResponse, HttpRequest, Http404
 from lib.utils import strip_tags, wakaba
 import models 
-import sys
+import lib.utils
+import lib.model_utils
+
 
 def index(request):
     template = Template('index.html')
-    context = Context({'welcome_text': 'Добро пожаловать'})
+    context = Context({'welcome_text': 'Добро пожаловать. Снова.'})
     result = template.render(context)
     return HttpResponse(result)
 
@@ -20,9 +23,8 @@ def faq(request):
 def b(request):
     template = Template('b.html')
     test = models.Model()
-    tread = models.Tread(1, models.now_timestamp())
+    tread = models.Tread(1, now_timestamp())
     testlist = test.get_all_records_from(tread)
-    #testlist = [models.Record(*[x for x in item]) for item in testlist]
     context = Context({'lol': testlist})
     result = template.render(context)
     return HttpResponse(result)
@@ -54,4 +56,26 @@ def head(request):
     for name in request:
         st += name + ': ' + str(request[name]) + '<br>'
     return HttpResponse(st)
-    
+
+def adminum(request):
+    model = models.Model()
+    if request.method == 'POST':
+        if request.has_key("сname"):
+            model.add_new_category(lib.model_utils.get_simple_category(
+                                            lib.utils.get_normal_string(request["cname"])))
+        else:
+            model.add_new_board_to_category(
+                                            lib.model_utils.get_simple_board(
+                                                            lib.utils.get_normal_string(request["bname"]),
+                                                            lib.utils.get_normal_string(request["badr"]), 
+                                                            request["cat"])
+                                            , model.get_category_by_id(request["cat"]))
+    categ = model.get_all_categorys()
+    boards = {}
+    for cat in categ:
+        boards[cat] = model.get_all_boards_from_category(cat)
+    return HttpResponse(Template('adminum.html').render({
+                                                         "categorys": categ, 
+                                                         "boards_dict": boards}))
+
+          
