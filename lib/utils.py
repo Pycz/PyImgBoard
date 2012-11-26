@@ -108,7 +108,7 @@ def isdop(char):
 
 def insert_quote(s):
     i = 0
-    tag = '<span style="color:#0000ff">'
+    tag = '<span style="color:#789922">'
     end_tag = '</span>'
     s = s.replace('&gt', '>')
     while i < len(s):

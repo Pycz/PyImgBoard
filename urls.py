@@ -14,5 +14,4 @@ url_patterns = [Url(r'^/$', first.index),
                 Url(r'^/ip$', first.ip),
                 Url(r'^/head$', first.head),
                 Url(r'^/adminum$', first.adminum),
-                Url(r'^/.*$', first.other),
-                ]
+                Url(r'^/.*$', first.other),]

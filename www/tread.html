@@ -4,9 +4,15 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
-		<title>/{{ board.adr }}/</title>
+		<title>/{{ board.adr }}/ - {{ board.name }}</title>
 	</head>
 	<body>
+		<div id="boards-nav">[
+			{% for bob in all_boards %}
+				<a href="/{{bob.adr}}/" title="{{bob.name}}">{{bob.adr}} / </a>
+			{% endfor %}]
+		</div>
+		<div class="board-title"><a href="/{{board.adr}}/">/{{board.adr}}/ - {{board.name}}</a></div>
 		<form method="post" action="/newrecord" id="post-form">
 			<table>
 				<tr>
@@ -33,6 +39,7 @@
 		<hr>		
 		<div class="tread">
 			{% for post in posts %}
+				<div class="side-arrows" id="sa164078535">&gt;&gt;</div>
 				<div class="post">
 					<div class="post-info">
 						<span class="name-block"><span class="name">{{post.name}}</span></span>						

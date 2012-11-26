@@ -83,37 +83,49 @@ def downloads(request):
     return HttpResponse('downloads')
 
 def other(request):
-    return HttpResponse(request['REQUEST_URI'])
+    return Http404()
 
 def board(request, name):
     model = models.Model()
-    board = models.get_simple_board(adr=name)
+    all_categorys = model.get_all_categorys()
+    all_boards = []
+    for category in all_categorys:
+        boards_from = model.get_all_boards_from_category(category)
+        all_boards += boards_from
+
+    board = model.get_board_by_adr(adr=name)
     all_treads = model.get_all_treads_by_date(board)
     
     class obert():
         def __init__(self, mid, name):
             self.id = mid
             self.name = name
-            
+           
     id_all_treads = [x.id for x in all_treads]
-
-            
     treads = []
     for tread in all_treads:
-        treads.append( obert(tread.id, model.get_all_records_from(tread, board)))
+        treads.append(obert(tread.id, 
+                            model.get_all_records_from(tread, board)))
 
     template = Template('boards.html')
     context = Context({'treads': treads, 'board': board, 
-                       'all_treads': id_all_treads})
+                       'all_boards': all_boards})
     return HttpResponse(template.render(context))
 
 def tread(request, board_adr, tread_id):
     model = models.Model()
-    board = models.get_simple_board(adr=board_adr)
+    all_categorys = model.get_all_categorys()
+    all_boards = []
+    for category in all_categorys:
+        boards_from = model.get_all_boards_from_category(category)
+        all_boards += boards_from
+
+    board = model.get_board_by_adr(adr=board_adr)
     tread = model.get_tread_by_id(tread_id, board=board)    
     posts = model.get_all_records_from(tread, board)
     template = Template('tread.html')
-    context = Context({'board': board,'tread': tread, 'posts': posts})
+    context = Context({'board': board,'tread': tread, 
+                       'posts': posts, 'all_boards': all_boards})
     return HttpResponse(template.render(context))
 
 def ip(request):
