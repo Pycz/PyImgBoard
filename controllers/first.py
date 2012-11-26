@@ -79,7 +79,7 @@ def other(request):
 def board(request, name):
     model = models.Model()
     board = models.get_simple_board(adr=name)
-    all_treads = model.get_all_treads(board)
+    all_treads = model.get_all_treads_by_date(board)
 
     treads = {}
     for tread in all_treads:
