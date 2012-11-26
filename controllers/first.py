@@ -14,6 +14,10 @@ def test(request):
 
 def handle_new_record(request):
     model = models.Model()
+    request.POST["pname"] = wakaba(strip_tags(request.POST["pname"]))
+    request.POST["pmail"] = wakaba(strip_tags(request.POST["pmail"]))
+    request.POST["ptitle"] = wakaba(strip_tags(request.POST["ptitle"]))
+    request.POST["ppost"] = wakaba(strip_tags(request.POST["ppost"]))
     if request.POST["pname"]=='':
         request.POST["pname"]="Anonymous" 
     NewRecord = models.get_simple_record(name = request.POST["pname"], email = request.POST["pmail"],
@@ -29,6 +33,10 @@ def handle_new_record(request):
 
 def handle_new_tread(request):
     #lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])
+    request.POST["pname"] = wakaba(strip_tags(request.POST["pname"]))
+    request.POST["pmail"] = wakaba(strip_tags(request.POST["pmail"]))
+    request.POST["ptitle"] = wakaba(strip_tags(request.POST["ptitle"]))
+    request.POST["ppost"] = wakaba(strip_tags(request.POST["ppost"]))
     model = models.Model()
     if request.POST["pname"]=='':
         request.POST["pname"]="Anonymous" 
@@ -49,7 +57,7 @@ def index(request):
         newcateg.append({cat.name: catboard})
         
     template = Template('index.html')
-    con = {"categorys": categ, "categ_list": newcateg, 'welcome_text': 'Добро пожаловать. Снова.'}
+    con = {"categorys": categ, "categ_list": newcateg, 'welcome_text': 'Welcome back. Again.'}
     context = Context(con)
     result = template.render(context)
     return HttpResponse(result)
@@ -79,7 +87,7 @@ def other(request):
 def board(request, name):
     model = models.Model()
     board = models.get_simple_board(adr=name)
-    all_treads = model.get_all_treads(board)
+    all_treads = model.get_all_treads_by_date(board)
 
     treads = {}
     for tread in all_treads:

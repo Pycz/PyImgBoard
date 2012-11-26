@@ -215,7 +215,7 @@ class Model:
         its_treads = "treads" + board.records_name
         
         self.cur.execute("""
-        SELECT * FROM %s ORDER BY timestamp DESC""" % (its_treads,)
+        SELECT * FROM %s ORDER BY last_time DESC""" % (its_treads,)
         )
         
         return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
