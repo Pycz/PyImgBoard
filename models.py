@@ -296,6 +296,14 @@ class Model:
             )     
            
         self.conection.commit() 
+    def get_board_by_adr(self, adr = "b"):
+        
+        self.cur.execute("""
+        SELECT * FROM boards WHERE adr = :adr""" ,
+        {"adr": adr}
+        )
+        
+        return self._tuple_to_obj(self.cur.fetchone(), Board)        
         
     def get_all_boards_from_category(self, category = get_simple_category()):
         self.cur.execute(

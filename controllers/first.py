@@ -27,7 +27,7 @@ def handle_new_record(request):
     
     model.insert_record_into(MyTread, NewRecord, MyBoard)
     
-    newstr = str(request.POST["boardadr"])+ ", in tread "+ str(request.POST["treadid"])+" "+str(request.POST["pname"])
+    newstr = str(request.POST["boardadr"])+ ", в треде "+ str(request.POST["treadid"])+", "+str(request.POST["pname"])
     con = {"lol": newstr, "treadname": request.POST["treadid"] , "boardname": request.POST["boardadr"]}
     return HttpResponse(Template('recordcreated.html').render(Context(con)))
 
