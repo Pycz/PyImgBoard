@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>	
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link href="css/style.css" rel="stylesheet" type="text/css"/>
+		<title>/{{ board.adr }}/</title>
+	</head>
+	<body>
+		<form method="post" action="/newrecord" id="post-form">
+			<table>
+				<tr>
+					<td>Name</td>
+					<td><input name="pname" type="text" /></td>
+				</tr>
+				<tr>
+					<td>E-mail</td>
+					<td><input name="pmail" type="text" /></td>
+				</tr>
+				<tr>
+					<td>Title</td>
+					<td><input name="ptitle" type="text" /></td>
+				</tr>
+				<tr>
+					<td>Comment</td>
+					<td><textarea name="ppost" cols="48" rows="4"></textarea></td>
+					<td><input type="submit" value="Submit" /></td>
+				</tr>				
+			</table>
+			<input name="treadid" type="hidden" value="{{tread.id}}"/>
+		</form>
+		<hr>		
+		<div class="tread">
+			{% for post in posts %}
+				<div class="post">
+					<div class="post-info">
+						<span class="name-block"><span class="name">{{post.name}}</span></span>						
+						<span class="date-time">{{post.timestamp}}</span>
+						<span class="post-num">No. {{post.id}}</span>
+					</div>
+					<div class="post-message">
+						{{post.post}}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</body>
+</html>
+
