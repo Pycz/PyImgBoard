@@ -97,7 +97,7 @@ class Http404(Exception, HttpResponse):
         if file404:
             text = file404.read()
         else:
-            text = '<h1>404 Page Not Found</h1>'
+            text = '<center><h1>404 Page Not Found</h1></center>'
         HttpResponse.__init__(self, content=text, status=404)
 
 

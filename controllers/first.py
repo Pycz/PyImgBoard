@@ -82,7 +82,7 @@ def downloads(request):
     return HttpResponse('downloads')
 
 def other(request):
-    return HttpResponse(request['REQUEST_URI'])
+    return Http404()
 
 def board(request, name):
     model = models.Model()

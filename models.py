@@ -111,6 +111,7 @@ class Model:
     def __init__(self):
         self.conection = sqlite3.connect(get_root_dir()+"/ImageBoard.db")
         self.cur = self.conection.cursor()
+        self.conection.text_factory = str
         
     def _tuple_to_obj(self, tup, Obj):
         return Obj(*tup)
