@@ -10,7 +10,7 @@
 		<div id="boards-nav">[
 			{% for bob in all_boards %}
 				<a href="/{{bob.adr}}/" title="{{bob.name}}">{{bob.adr}} / </a>
-			{% endfor %}]
+			{% endfor %}<a href="/" title="Main">Main/ </a>]
 		</div>
 		<div class="board-title">/{{board.adr}}/ - {{board.name}}</div>
 		<form method="post" action="/newtread" id="post-form">
