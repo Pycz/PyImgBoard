@@ -111,6 +111,7 @@ class Model:
     def __init__(self):
         self.conection = sqlite3.connect(get_root_dir()+"/ImageBoard.db")
         self.cur = self.conection.cursor()
+        self.conection.text_factory = str
         
     def _tuple_to_obj(self, tup, Obj):
         return Obj(*tup)
@@ -295,6 +296,14 @@ class Model:
             )     
            
         self.conection.commit() 
+    def get_board_by_adr(self, adr = "b"):
+        
+        self.cur.execute("""
+        SELECT * FROM boards WHERE adr = :adr""" ,
+        {"adr": adr}
+        )
+        
+        return self._tuple_to_obj(self.cur.fetchone(), Tread)        
         
     def get_all_boards_from_category(self, category = get_simple_category()):
         self.cur.execute(
