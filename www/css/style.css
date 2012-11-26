@@ -100,6 +100,16 @@ body {
 	display: inline;
 }
 
+.post {
+	margin: 4px 0;
+	background-color: #D6DAF0;
+	border: 1px solid #B7C5D9;
+	border-left: none;
+	border-top: none;
+	display: table;
+	padding: 2px;
+}
+
 .name-block {
 	display: inline-block;
 }
