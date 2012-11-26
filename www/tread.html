@@ -4,10 +4,10 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
-		<title>/{{ board.adr }}/ - {{ board.name }}</title>
+		<title>/{{ board.adr }}/</title>
 	</head>
 	<body>
-		<form method="post" action="/newtread" id="post-form">
+		<form method="post" action="/newrecord" id="post-form">
 			<table>
 				<tr>
 					<td>Name</td>
@@ -19,37 +19,31 @@
 				</tr>
 				<tr>
 					<td>Title</td>
-					<td><input name="ptitle" type="text" /></td>					
+					<td><input name="ptitle" type="text" /></td>
 				</tr>
 				<tr>
 					<td>Comment</td>
 					<td><textarea name="ppost" cols="48" rows="4"></textarea></td>
 					<td><input type="submit" value="Submit" /></td>
-				</tr>
+				</tr>				
 			</table>
-			<input name="boardadr" type="hidden" value="{{board.adr}}"/>
+			<input name="treadid" type="hidden" value="{{tread.id}}"/>
 		</form>
-		
-		<div class="board">
-			<hr>
-			{% for tread in treads %}
-				<div class="tread">
-				<span>[<a href="/{{board.adr}}/{{tread.key}}">Reply</a>]</span>
-				{% for post in tread.value %}
-					<div class="post">
-						<div class="post-info">
-							<span class="name-block"><span class="name">{{post.name}}</span></span>						
-							<span class="date-time">{{post.timestamp}}</span>
-							<span class="post-num">No. {{post.id}}</span>
-						</div>
-						<div class="post-message">
-							{{post.post}}
-						</div>
+		<hr>		
+		<div class="tread">
+			{% for post in posts %}
+				<div class="post">
+					<div class="post-info">
+						<span class="name-block"><span class="name">{{post.name}}</span></span>						
+						<span class="date-time">{{post.timestamp}}</span>
+						<span class="post-num">No. {{post.id}}</span>
 					</div>
-				{% endfor %}
+					<div class="post-message">
+						{{post.post}}
+					</div>
 				</div>
-				<hr>
 			{% endfor %}
 		</div>
 	</body>
 </html>
+

@@ -5,6 +5,7 @@ from controllers import first
 url_patterns = [Url(r'^/$', first.index),
                 Url(r'^/test$', first.test),
                 Url(r'^/([a-z]{1,3})/$', first.board),
+                Url(r'^/([a-z]{1,3})/(\d+)$', first.tread),
                 Url(r'^/faq$', first.faq),
                 Url(r'^/newtread$', first.handle_new_tread),
                 Url(r'^/newrecord$', first.handle_new_record),
