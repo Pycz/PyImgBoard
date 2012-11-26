@@ -7,32 +7,34 @@
 		<title>/{{ board.adr }}/ - {{ board.name }}</title>
 	</head>
 	<body>
-		<form method="post" action="" id="post-form">
+		<form method="post" action="/newtread" id="post-form">
 			<table>
 				<tr>
 					<td>Name</td>
-					<td><input name="name" type="text" /></td>
+					<td><input name="pname" type="text" /></td>
 				</tr>
 				<tr>
 					<td>E-mail</td>
-					<td><input name="email" type="text" /></td>
+					<td><input name="pmail" type="text" /></td>
 				</tr>
 				<tr>
 					<td>Title</td>
-					<td><input name="title" type="text" /></td>					
+					<td><input name="ptitle" type="text" /></td>					
 				</tr>
 				<tr>
 					<td>Comment</td>
-					<td><textarea name="post" cols="48" rows="4"></textarea></td>
+					<td><textarea name="ppost" cols="48" rows="4"></textarea></td>
 					<td><input type="submit" value="Submit" /></td>
-				</tr>				
+				</tr>
 			</table>
+			<input name="boardadr" type="hidden" value="{{board.adr}}"/>
 		</form>
-		{{ size }}
+		
 		<div class="board">
 			<hr>
 			{% for tread in treads %}
 				<div class="tread">
+				<span>[<a href="/{{board.adr}}/{{tread.key}}">Reply</a>]</span>
 				{% for post in tread.value %}
 					<div class="post">
 						<div class="post-info">
