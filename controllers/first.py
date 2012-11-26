@@ -40,6 +40,7 @@ def handle_new_tread(request):
     model = models.Model()
     if request.POST["pname"]=='':
         request.POST["pname"]="Anonymous" 
+        
     NewRecord = models.get_simple_record(name = request.POST["pname"], email = request.POST["pmail"],
                                           title = request.POST["ptitle"],post = request.POST["ppost"])
     MyBoard = models.get_simple_board(adr = lib.utils.get_board_name_from_referer(request['HTTP_REFERER']))
@@ -88,14 +89,22 @@ def board(request, name):
     model = models.Model()
     board = models.get_simple_board(adr=name)
     all_treads = model.get_all_treads_by_date(board)
+    
+    class obert():
+        def __init__(self, mid, name):
+            self.id = mid
+            self.name = name
+            
+    id_all_treads = [x.id for x in all_treads]
 
-    treads = {}
+            
+    treads = []
     for tread in all_treads:
-        treads[tread.id] = model.get_all_records_from(tread, board)
+        treads.append( obert(tread.id, model.get_all_records_from(tread, board)))
 
     template = Template('boards.html')
     context = Context({'treads': treads, 'board': board, 
-                       'all_treads': all_treads})
+                       'all_treads': id_all_treads})
     return HttpResponse(template.render(context))
 
 def tread(request, board_adr, tread_id):

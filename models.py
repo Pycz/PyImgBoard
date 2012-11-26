@@ -296,6 +296,7 @@ class Model:
             )     
            
         self.conection.commit() 
+        
     def get_board_by_adr(self, adr = "b"):
         
         self.cur.execute("""
