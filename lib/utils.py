@@ -194,8 +194,8 @@ def get_board_name_from_referer(s):
 
 def get_tread_name_from_referer_rec(s):
     x = s.split("/")
-    return x[-2]
+    return x[-1]
 
 def get_board_name_from_referer_rec(s):
     x = s.split("/")
-    return x[-3]
+    return x[-2]
