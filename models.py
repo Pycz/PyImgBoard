@@ -303,7 +303,7 @@ class Model:
         {"adr": adr}
         )
         
-        return self._tuple_to_obj(self.cur.fetchone(), Tread)        
+        return self._tuple_to_obj(self.cur.fetchone(), Board)        
         
     def get_all_boards_from_category(self, category = get_simple_category()):
         self.cur.execute(
