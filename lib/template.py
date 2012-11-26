@@ -687,6 +687,7 @@ class Context:
             elif type(result) is list and type(keys[i]) is int:
                 result = result[keys[i]]
             else:
+                print >> sys.stderr, 'error = ' + str(keys[i])
                 raise SyntaxError('error type in context',
                                   self._whoami())
                 

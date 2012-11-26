@@ -148,3 +148,19 @@ body {
 	text-align: center;
 	color: #AF0A0F;
 }
+
+#boards-nav {
+	font-size: 9pt;
+	color: #89A;
+	display: block;
+	font-family: arial,helvetica,sans-serif;
+}
+
+#boards-nav a {
+	font-weight: normal;
+	padding: 1px;
+	text-decoration: none;
+	color: #34345C;
+	font-size: 9pt;
+	font-family: arial,helvetica,sans-serif;
+}
