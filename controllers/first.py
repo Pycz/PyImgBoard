@@ -95,9 +95,16 @@ def board(request, name):
     board = model.get_board_by_adr(adr=name)
     all_treads = model.get_all_treads_by_date(board)
 
-    treads = {}
+    class obert():
+        def __init__(self, mid, name):
+            self.id = mid
+            self.name = name
+           
+    id_all_treads = [x.id for x in all_treads]
+    treads = []
     for tread in all_treads:
-        treads[tread.id] = model.get_all_records_from(tread, board)
+        treads.append(obert(tread.id, 
+                            model.get_all_records_from(tread, board)))
 
     template = Template('boards.html')
     context = Context({'treads': treads, 'board': board, 
@@ -106,11 +113,18 @@ def board(request, name):
 
 def tread(request, board_adr, tread_id):
     model = models.Model()
-    board = models.get_board_by_adr(adr=board_adr)
+    all_categorys = model.get_all_categorys()
+    all_boards = []
+    for category in all_categorys:
+        boards_from = model.get_all_boards_from_category(category)
+        all_boards += boards_from
+
+    board = model.get_board_by_adr(adr=board_adr)
     tread = model.get_tread_by_id(tread_id, board=board)    
     posts = model.get_all_records_from(tread, board)
     template = Template('tread.html')
-    context = Context({'board': board,'tread': tread, 'posts': posts})
+    context = Context({'board': board,'tread': tread, 
+                       'posts': posts, 'all_boards': all_boards})
     return HttpResponse(template.render(context))
 
 def ip(request):

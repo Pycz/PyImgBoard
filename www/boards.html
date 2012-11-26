@@ -39,8 +39,8 @@
 			<hr>
 			{% for tread in treads %}
 				<div class="tread">
-				<span>[<a href="/{{board.adr}}/{{tread.key}}">Reply</a>]</span>
-				{% for post in tread.value %}
+				<span>[<a href="/{{board.adr}}/{{tread.id}}">Reply</a>]</span>
+				{% for post in tread.name %}
 					<div class="side-arrows" id="sa164078535">&gt;&gt;</div>
 					<div class="post">				
 						<div class="post-info">

@@ -7,7 +7,12 @@
 		<title>/{{ board.adr }}/ - {{ board.name }}</title>
 	</head>
 	<body>
-		<div class="board-title">/{{board.adr}}/ - {{board.name}}</div>
+		<div id="boards-nav">[
+			{% for bob in all_boards %}
+				<a href="/{{bob.adr}}/" title="{{bob.name}}">{{bob.adr}} / </a>
+			{% endfor %}]
+		</div>
+		<div class="board-title"><a href="/{{board.adr}}/">/{{board.adr}}/ - {{board.name}}</a></div>
 		<form method="post" action="/newrecord" id="post-form">
 			<table>
 				<tr>

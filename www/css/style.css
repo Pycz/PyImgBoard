@@ -149,6 +149,10 @@ body {
 	color: #AF0A0F;
 }
 
+.board-title a {
+	text-decoration: none;
+}
+
 #boards-nav {
 	font-size: 9pt;
 	color: #89A;
