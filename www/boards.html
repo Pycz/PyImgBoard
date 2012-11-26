@@ -7,6 +7,7 @@
 		<title>/{{ board.adr }}/ - {{ board.name }}</title>
 	</head>
 	<body>
+		<div class="board-title">/{{board.adr}}/ - {{board.name}}</div>
 		<form method="post" action="/newtread" id="post-form">
 			<table>
 				<tr>
@@ -35,7 +36,8 @@
 				<div class="tread">
 				<span>[<a href="/{{board.adr}}/{{tread.key}}">Reply</a>]</span>
 				{% for post in tread.value %}
-					<div class="post">
+					<div class="side-arrows" id="sa164078535">&gt;&gt;</div>
+					<div class="post">				
 						<div class="post-info">
 							<span class="name-block"><span class="name">{{post.name}}</span></span>						
 							<span class="date-time">{{post.timestamp}}</span>
