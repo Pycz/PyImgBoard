@@ -166,6 +166,17 @@ class Model:
         {"id": record.id, "last_time": now_timestamp()})
                 
         self.conection.commit()
+        
+        self.cur.execute('''
+        SELECT * FROM %s ORDER BY id DESC LIMIT 1
+        ''' % (its_treads))  
+        tread = self._tuple_to_obj(self.cur.fetchone(), Tread)
+        
+        self.conection.execute("""
+            UPDATE %s SET tread_id = :tread_id WHERE id = :id """ % (its_records,),
+            {"tread_id": tread.id, "id": record.id})
+        
+        self.conection.commit()
            
     def get_all_records_from(self, tread, board = get_simple_board()):
         its_records = "records" + board.records_name
@@ -184,10 +195,10 @@ class Model:
         
         self.cur.execute("""
         SELECT * FROM %s WHERE id = :tread_id""" % (its_treads,),
-        {"tread_id": T_id}
+        {"tread_id": int(T_id)}
         )
         
-        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
+        return self._tuple_to_obj(self.cur.fetchone(), Tread)
     
     def get_all_treads(self, board = get_simple_board()):
         its_treads = "treads" + board.records_name

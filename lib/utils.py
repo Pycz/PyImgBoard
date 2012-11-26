@@ -191,3 +191,11 @@ def get_normal_string(s):
 def get_board_name_from_referer(s):
     x = s.split("/")
     return x[-2]
+
+def get_tread_name_from_referer_rec(s):
+    x = s.split("/")
+    return x[-2]
+
+def get_board_name_from_referer_rec(s):
+    x = s.split("/")
+    return x[-3]
