@@ -195,10 +195,10 @@ class Model:
         
         self.cur.execute("""
         SELECT * FROM %s WHERE id = :tread_id""" % (its_treads,),
-        {"tread_id": T_id}
+        {"tread_id": int(T_id)}
         )
         
-        return self._list_of_tuple_to_list_of_obj(self.cur.fetchall(), Tread)
+        return self._tuple_to_obj(self.cur.fetchone(), Tread)
     
     def get_all_treads(self, board = get_simple_board()):
         its_treads = "treads" + board.records_name

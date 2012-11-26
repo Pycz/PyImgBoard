@@ -12,6 +12,20 @@ def test(request):
     result = template.render(context)
     return HttpResponse(result)
 
+def handle_new_record(request):
+    model = models.Model()
+    if request.POST["pname"]=='':
+        request.POST["pname"]="Anonymous" 
+    NewRecord = models.get_simple_record(name = request.POST["pname"], email = request.POST["pmail"],
+                                          title = request.POST["ptitle"],post = request.POST["ppost"])
+    MyBoard = models.get_simple_board(adr = request.POST["boardadr"])
+    MyTread = model.get_tread_by_id(request.POST["treadid"], MyBoard)
+    
+    model.insert_record_into(MyTread, NewRecord, MyBoard)
+    
+    newstr = str(lib.utils.get_board_name_from_referer(request['HTTP_REFERER']))+ ", "+str(request.POST["pname"])
+    con = {"lol": newstr, "treadname": lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])}
+    return HttpResponse(Template('recordcreated.html').render(Context(con)))
 
 def handle_new_tread(request):
     #lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])
@@ -20,10 +34,10 @@ def handle_new_tread(request):
         request.POST["pname"]="Anonymous" 
     NewRecord = models.get_simple_record(name = request.POST["pname"], email = request.POST["pmail"],
                                           title = request.POST["ptitle"],post = request.POST["ppost"])
-    MyBoard = models.get_simple_board(adr = "b")
+    MyBoard = models.get_simple_board(adr = lib.utils.get_board_name_from_referer(request['HTTP_REFERER']))
     model.add_new_tread_to_board_by_record(NewRecord, MyBoard)
-    newstr = str("b")+ ", "+str(request.POST["pname"])
-    con = {"lol": newstr, "boardname": "b"}
+    newstr = str(lib.utils.get_board_name_from_referer(request['HTTP_REFERER']))+ ", "+str(request.POST["pname"])
+    con = {"lol": newstr, "boardname": lib.utils.get_board_name_from_referer(request['HTTP_REFERER'])}
     return HttpResponse(Template('treadcreated.html').render(Context(con)))
 
 def index(request):
